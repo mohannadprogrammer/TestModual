@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <!-- Step 2: Company Information -->
+    <t t-name="onboarding_wizard.CompanyInfoStep">
+        <div class="wizard_step company_info_step">
+            <h2>Company Information</h2>
+            <p class="step_subtitle">Tell us about your company</p>
+
+            <div class="form_container">
+                <div class="form_section">
+                    <h3>Basic Information</h3>
+
+                    <div class="form_group">
+                        <label>Company Name *</label>
+                        <input
+                            type="text"
+                            class="form_control"
+                            t-model="props.companyInfo.name"
+                            placeholder="Enter company name"
+                        />
+                    </div>
+
+                    <div class="form_group">
+                        <label>Street</label>
+                        <input
+                            type="text"
+                            class="form_control"
+                            placeholder="Enter street address"
+                            t-model="props.companyInfo.street"
+                        />
+                    </div>
+
+                    <div class="form_group">
+                        <label>Street 2</label>
+                        <input
+                            type="text"
+                            class="form_control"
+                            placeholder="Enter street 2 (optional)"
+                            t-model="props.companyInfo.street2"
+                        />
+                    </div>
+
+                    <div class="form_group">
+                        <label>City</label>
+                        <input
+                            type="text"
+                            class="form_control"
+                            placeholder="Enter city"
+                            t-model="props.companyInfo.city"
+                        />
+                    </div>
+
+                    <div class="form_row">
+                        <div class="form_group">
+                            <label>Country *</label>
+                            <select
+                                class="form_control"
+                                t-model="props.companyInfo.country_id"
+                            >
+                                <option value="">Select Country</option>
+                                <t t-foreach="props.countries" t-as="country" t-key="country.id">
+                                    <option t-esc="country.name" t-att-value="country.id" />
+                                </t>
+                            </select>
+                        </div>
+
+                        <div class="form_group">
+                            <label>Currency *</label>
+                            <select
+                                class="form_control"
+                                t-model="props.companyInfo.currency_id"
+                            >
+                                <option value="">Select Currency</option>
+                                <t t-foreach="props.currencies" t-as="currency" t-key="currency.id">
+                                    <option t-esc="currency.name" t-att-value="currency.id" />
+                                </t>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form_row">
+                        <div class="form_group">
+                            <label>Timezone</label>
+                            <input
+                                type="text"
+                                class="form_control"
+                                placeholder="e.g., Asia/Dubai"
+                                t-model="props.companyInfo.tz"
+                            />
+                        </div>
+
+                        <div class="form_group">
+                            <label>VAT Number</label>
+                            <input
+                                type="text"
+                                class="form_control"
+                                placeholder="Enter VAT number"
+                                t-model="props.companyInfo.vat"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form_section">
+                    <h3>Company Logo</h3>
+                    <div class="logo_upload">
+                        <div class="logo_placeholder">
+                            <span>📷</span>
+                            <p>No logo uploaded</p>
+                           
+                                <img t-att-src="'data:image/png;base64,' + props.companyInfo.logo"
+                                     alt="Logo Preview" class="logo_preview" />
+                            
+                        </div>
+
+                        <input
+                            type="file"
+                            accept="image/*"
+                            id="logo_input"
+                            class="d-none"
+                            t-ref="logoInput"
+                            t-on-change="handleFileChange"
+                        />
+                        <button
+                            type="button"
+                            t-attf-for="logo_input"
+                            t-on-click="openFileDialog"
+                            class="btn btn-outline-primary mt-2"
+                        >
+                            Upload Logo
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form_actions">
+                <button class="btn btn-outline-secondary" t-on-click="props.onPrevious">
+                    ← Previous
+                </button>
+                <button class="btn btn-primary" t-on-click="props.onNext">
+                    Next →
+                </button>
+            </div>
+        </div>
+    </t>
+
+</templates>

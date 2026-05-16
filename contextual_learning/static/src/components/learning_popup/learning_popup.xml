@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<templates xml:space="preserve">
+
+    <t t-name="contextual_learning.LearningPopup">
+
+        <t t-if="state.visible">
+
+            <div
+                class="learning_popup"
+                t-att-class="
+                    state.minimized
+                    ? 'minimized'
+                    : ''
+                "
+            >
+                <!-- t-on-click="expandPopup" -->
+                <div class="popup_header" >
+
+                    <h3>
+                        Learning Assistant
+                    </h3>
+
+                    <div class="popup_actions">
+
+                        <button
+                            t-on-click="minimizePopup"
+                        >
+                            —
+                        </button>
+                        <button
+                            t-on-click="expandPopup"
+                        >
+                            ☐
+                        </button> 
+                        <button
+                            t-on-click="closePopup"
+                        >
+                            ✕
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <t t-if="!state.minimized">
+
+                    <div class="popup_body">
+
+                        <h4
+                            t-esc="
+                                state.content.title
+                            "
+                        />
+
+                        <p
+                            t-esc="
+                                state.content.description
+                            "
+                        />
+
+                        <t t-if="
+                            state.content.video_url
+                        ">
+
+                            <iframe
+                                width="100%"
+                                height="200"
+                                t-att-src="
+                                    state.content.video_url
+                                "
+                            />
+
+                        </t>
+
+                    </div>
+
+                </t>
+
+            </div>
+
+        </t>
+
+    </t>
+
+</templates>

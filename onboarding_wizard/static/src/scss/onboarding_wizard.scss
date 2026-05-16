@@ -1,0 +1,943 @@
+// Onboarding Wizard Styles
+
+$primary: #007bff;
+$secondary: #6c757d;
+$success: #28a745;
+$danger: #dc3545;
+$warning: #ffc107;
+$info: #17a2b8;
+$light: #f8f9fa;
+$dark: #343a40;
+
+$border-radius: 8px;
+$box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+$transition: all 0.3s ease;
+
+// Main Wizard Container
+.o_onboarding_wizard {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, sans-serif;
+
+    .wizard_header {
+        background: white;
+        padding: 1rem 2rem;
+        box-shadow: $box-shadow;
+        border-bottom: 1px solid #e0e0e0;
+
+        .wizard_header_top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            // margin-bottom: 1.5rem;
+
+            .wizard_logo {
+                width: 50px;
+                height: 50px;
+
+                img {
+                    width: 100%;
+                    height: auto;
+                }
+            }
+
+            .wizard_title {
+                flex: 1;
+                margin-left: 1.5rem;
+
+                h1 {
+                    margin: 0;
+                    font-size: 1.8rem;
+                    color: $dark;
+                    font-weight: 700;
+                }
+
+                .wizard_subtitle {
+                    margin: 0.25rem 0 0 0;
+                    color: $secondary;
+                    font-size: 0.95rem;
+                }
+            }
+
+            .wizard_progress_badge {
+                background: linear-gradient(135deg, $primary, $info);
+                color: white;
+                padding: 0.5rem 1.5rem;
+                border-radius: 50px;
+                font-weight: 600;
+                font-size: 1.1rem;
+            }
+        }
+
+        .wizard_progress_bar_container {
+            .wizard_progress_bar {
+                height: 6px;
+                background: #e0e0e0;
+                border-radius: 3px;
+                overflow: hidden;
+
+                .wizard_progress_fill {
+                    height: 100%;
+                    background: linear-gradient(90deg, $primary, $success);
+                    transition: width 0.3s ease;
+                    border-radius: 3px;
+                }
+            }
+
+            .progress_text {
+                margin: 0.5rem 0 0 0;
+                color: $secondary;
+                font-size: 0.85rem;
+                text-align: right;
+            }
+        }
+    }
+
+    .wizard_steps_nav {
+        background: white;
+        padding: 1.5rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        overflow-x: auto;
+        border-bottom: 1px solid #e0e0e0;
+
+        .step_nav_item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 0 0 auto;
+            min-width: 100px;
+            padding: 0 0.5rem;
+            opacity: 0.5;
+            transition: $transition;
+
+            &.completed,
+            &.active {
+                opacity: 1;
+            }
+
+            &.active {
+                .step_nav_circle {
+                    background: linear-gradient(135deg, $primary, $info);
+                    color: white;
+                    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+                }
+
+                .step_nav_name {
+                    color: $primary;
+                    font-weight: 600;
+                }
+            }
+
+            .step_nav_circle {
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                background: $light;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 500;
+                color: $secondary;
+                margin-bottom: 0.2rem;
+                transition: $transition;
+                border: 2px solid transparent;
+            }
+
+            .step_nav_name {
+                font-size: 0.8rem;
+                color: $secondary;
+                text-align: center;
+                transition: $transition;
+            }
+        }
+    }
+
+    .wizard_content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 2rem;
+        background: white;
+        margin: 1rem;
+        border-radius: $border-radius;
+        box-shadow: $box-shadow;
+
+        .wizard_loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+
+            .spinner {
+                width: 40px;
+                height: 40px;
+                border: 4px solid $light;
+                border-top: 4px solid $primary;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+            }
+
+            p {
+                margin-top: 1rem;
+                color: $secondary;
+            }
+        }
+    }
+
+    .wizard_footer {
+        background: white;
+        padding: 1.5rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid #e0e0e0;
+        margin: 1rem;
+        border-radius: $border-radius;
+        box-shadow: $box-shadow;
+
+        .footer_actions_left,
+        .footer_actions_right,
+        .footer_actions_center {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .footer_actions_center {
+            flex: 1;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: $border-radius;
+            font-weight: 500;
+            transition: $transition;
+            border: none;
+            cursor: pointer;
+
+            &:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+            &:hover:not(:disabled) {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            }
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, $primary, $info);
+            color: white;
+
+            &:hover:not(:disabled) {
+                background: linear-gradient(135deg, darken($primary, 10%), darken($info, 10%));
+            }
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, $success, #20c997);
+            color: white;
+
+            &:hover:not(:disabled) {
+                background: linear-gradient(135deg,
+                        darken($success, 10%),
+                        darken(#20c997, 10%));
+            }
+        }
+
+        .btn-outline-secondary {
+            color: $secondary;
+            border: 2px solid $secondary;
+            background: white;
+
+            &:hover:not(:disabled) {
+                background: $light;
+            }
+        }
+
+        .btn-link {
+            color: $secondary;
+            background: transparent;
+            text-decoration: underline;
+            padding: 0;
+
+            &:hover {
+                color: $primary;
+            }
+        }
+
+        .btn-danger {
+            background: $danger;
+            color: white;
+
+            &:hover:not(:disabled) {
+                background: darken($danger, 10%);
+            }
+        }
+    }
+
+    .wizard_modal_overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+
+        .wizard_modal {
+            background: white;
+            padding: 2rem;
+            border-radius: $border-radius;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            text-align: center;
+
+            h3 {
+                margin-bottom: 0.5rem;
+                color: $dark;
+                font-size: 1.3rem;
+            }
+
+            p {
+                margin-bottom: 1.5rem;
+                color: $secondary;
+            }
+
+            .modal_actions {
+                display: flex;
+                gap: 1rem;
+                justify-content: center;
+            }
+        }
+    }
+}
+
+// Wizard Steps Styles
+
+.wizard_step {
+    animation: slideIn 0.3s ease;
+
+    h2 {
+        font-size: 2rem;
+        color: $dark;
+        margin-bottom: 0.5rem;
+        font-weight: 700;
+    }
+
+    .step_subtitle {
+        font-size: 1rem;
+        color: $secondary;
+        margin-bottom: 2rem;
+    }
+
+    .form_container,
+    .team_section,
+    .accounting_form {
+        margin-bottom: 2rem;
+
+        .form_section {
+            background: $light;
+            padding: 1.5rem;
+            border-radius: $border-radius;
+            margin-bottom: 1.5rem;
+
+            h3 {
+                margin-top: 0;
+                margin-bottom: 1rem;
+                color: $dark;
+                font-size: 1.1rem;
+                font-weight: 600;
+            }
+        }
+    }
+
+    .form_group {
+        margin-bottom: 1rem;
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: $dark;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .form_control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: $border-radius;
+            font-size: 0.95rem;
+            transition: $transition;
+            font-family: inherit;
+
+            &:focus {
+                outline: none;
+                border-color: $primary;
+                box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+            }
+        }
+
+        .error_message {
+            color: $danger;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            display: block;
+        }
+    }
+
+    .form_row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+
+        @media (max-width: 768px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .form_actions {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-top: 2rem;
+
+        button {
+            flex: 1;
+            padding: 0.75rem;
+            font-size: 1rem;
+            border-radius: $border-radius;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: $transition;
+
+            &:hover:not(:disabled) {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            }
+        }
+    }
+}
+
+// Welcome Step Specific Styles
+.welcome_step {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+
+    .welcome_content {
+        .welcome_icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .welcome_message {
+            color: $secondary;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .welcome_features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+
+            @media (max-width: 768px) {
+                grid-template-columns: 1fr;
+            }
+
+            .feature_item {
+                background: $light;
+                padding: 1rem;
+                border-radius: $border-radius;
+                display: flex;
+                gap: 0.75rem;
+
+                .feature_icon {
+                    font-size: 1.5rem;
+                    flex-shrink: 0;
+                }
+
+                strong {
+                    display: block;
+                    margin-bottom: 0.25rem;
+                    color: $dark;
+                }
+
+                p {
+                    margin: 0;
+                    font-size: 0.85rem;
+                    color: $secondary;
+                }
+            }
+        }
+
+        .welcome_checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+
+            input[type="checkbox"] {
+                width: 20px;
+                height: 20px;
+                cursor: pointer;
+            }
+
+            label {
+                margin: 0;
+                color: $dark;
+                cursor: pointer;
+            }
+        }
+
+        .btn-lg {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+        }
+    }
+
+    .welcome_image {
+        text-align: center;
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    }
+}
+
+// Company Info Step Specific Styles
+.company_info_step {
+    .logo_upload {
+        background: $light;
+        padding: 2rem;
+        border-radius: $border-radius;
+        text-align: center;
+        border: 2px dashed #d0d0d0;
+        transition: $transition;
+
+        &:hover {
+            border-color: $primary;
+            background: rgba(0, 123, 255, 0.05);
+        }
+
+        .logo_preview {
+            max-width: 150px;
+            max-height: 150px;
+            border-radius: $border-radius;
+            margin-bottom: 1rem;
+        }
+
+        .logo_placeholder {
+            font-size: 3rem;
+            color: $secondary;
+            margin-bottom: 0.5rem;
+
+            p {
+                margin: 0;
+                color: $secondary;
+            }
+        }
+    }
+}
+
+// Business Activity Step Specific Styles
+.business_activity_step {
+    .business_types_grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+
+        .business_type_card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: $border-radius;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: $transition;
+
+            &:hover {
+                border-color: $primary;
+                box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
+            }
+
+            &.selected {
+                background: rgba(0, 123, 255, 0.05);
+                border-color: $primary;
+                box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+
+                h4 {
+                    color: $primary;
+                }
+            }
+
+            .type_icon {
+                font-size: 2.5rem;
+                margin-bottom: 0.5rem;
+            }
+
+            h4 {
+                margin: 0.5rem 0;
+                color: $dark;
+                font-weight: 600;
+            }
+
+            p {
+                margin: 0;
+                color: $secondary;
+                font-size: 0.85rem;
+            }
+        }
+    }
+
+    .recommended_modules_section {
+        background: $light;
+        padding: 1.5rem;
+        border-radius: $border-radius;
+
+        h3 {
+            margin-top: 0;
+            color: $dark;
+        }
+
+        .loading_text {
+            text-align: center;
+            color: $secondary;
+            padding: 1rem;
+        }
+
+        .modules_list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+
+            .module_item {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+
+                input[type="checkbox"] {
+                    width: 18px;
+                    height: 18px;
+                    cursor: pointer;
+                }
+
+                label {
+                    margin: 0;
+                    color: $dark;
+                    cursor: pointer;
+                    flex: 1;
+                }
+            }
+        }
+    }
+}
+
+// Team & Users Step Specific Styles
+.team_users_step {
+    // display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+
+    @media (max-width: 1024px) {
+        grid-template-columns: 1fr;
+    }
+
+    .add_employee_form {
+        background: $light;
+        padding: 1.5rem;
+        border-radius: $border-radius;
+
+        h3 {
+            margin-top: 0;
+        }
+
+        .form_group.flex-1 {
+            flex: 1;
+        }
+
+        .form_row {
+            display: flex;
+            gap: 1rem;
+        }
+    }
+
+    .employees_list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+
+        .empty_state {
+            text-align: center;
+            color: $secondary;
+            padding: 2rem;
+            background: $light;
+            border-radius: $border-radius;
+        }
+
+        .employee_card {
+            background: $light;
+            border-left: 4px solid $primary;
+            padding: 1rem;
+            border-radius: $border-radius;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .employee_info {
+                flex: 1;
+
+                h4 {
+                    margin: 0 0 0.25rem 0;
+                    color: $dark;
+                    font-weight: 600;
+                }
+
+                p {
+                    margin: 0 0 0.25rem 0;
+                    color: $secondary;
+                    font-size: 0.9rem;
+                }
+
+                small {
+                    color: $secondary;
+                    font-style: italic;
+                }
+            }
+        }
+    }
+}
+
+// Workflow Step Specific Styles
+.workflow_step {
+    .layout_templates_grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+
+        .template_card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: $border-radius;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: $transition;
+            position: relative;
+
+            &:hover {
+                border-color: $primary;
+                box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
+            }
+
+            &.selected {
+                background: rgba(0, 123, 255, 0.05);
+                border-color: $primary;
+                box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+
+                h4 {
+                    color: $primary;
+                }
+            }
+
+            .template_preview {
+                font-size: 3rem;
+                margin-bottom: 1rem;
+            }
+
+            h4 {
+                margin: 0.5rem 0;
+                color: $dark;
+                font-weight: 600;
+            }
+
+            p {
+                margin: 0.5rem 0 0 0;
+                color: $secondary;
+                font-size: 0.85rem;
+            }
+
+            .selected_badge {
+                display: inline-block;
+                background: $primary;
+                color: white;
+                padding: 0.25rem 0.75rem;
+                border-radius: 50px;
+                font-size: 0.8rem;
+                margin-top: 0.5rem;
+                font-weight: 600;
+            }
+        }
+    }
+}
+
+// Final Dashboard Step Specific Styles
+.final_dashboard_step {
+    text-align: center;
+
+    .completion_message {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        background: linear-gradient(135deg, rgba(0, 123, 255, 0.1), rgba(32, 201, 151, 0.1));
+        border-radius: $border-radius;
+
+        h2 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+    }
+
+    .dashboard_stats_grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+
+        .stat_card {
+            background: $light;
+            padding: 2rem;
+            border-radius: $border-radius;
+            border-left: 4px solid $primary;
+
+            .stat_value {
+                font-size: 2rem;
+                font-weight: 700;
+                color: $primary;
+                margin-bottom: 0.5rem;
+            }
+
+            .stat_label {
+                color: $secondary;
+                margin: 0;
+                font-size: 0.9rem;
+                font-weight: 500;
+            }
+
+            .stat_progress {
+                height: 4px;
+                background: #d0d0d0;
+                border-radius: 2px;
+                overflow: hidden;
+                margin-top: 0.75rem;
+
+                .stat_progress_fill {
+                    height: 100%;
+                    background: linear-gradient(90deg, $primary, $success);
+                }
+            }
+        }
+    }
+
+    .next_steps_section {
+        background: $light;
+        padding: 1.5rem;
+        border-radius: $border-radius;
+        text-align: left;
+        margin-bottom: 2rem;
+
+        h3 {
+            margin-top: 0;
+            color: $dark;
+        }
+
+        .next_steps_list {
+            margin: 0;
+            padding-left: 1.5rem;
+
+            li {
+                margin-bottom: 0.75rem;
+                color: $dark;
+            }
+        }
+    }
+
+    .final_actions {
+        display: flex;
+        justify-content: center;
+
+        .btn-lg {
+            padding: 1.25rem 3rem;
+            font-size: 1.1rem;
+            min-width: 300px;
+        }
+    }
+}
+
+// Animations
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+    .o_onboarding_wizard {
+        .wizard_header .wizard_header_top {
+            flex-direction: column;
+            text-align: center;
+
+            .wizard_title {
+                margin-left: 0;
+            }
+        }
+
+        .wizard_content {
+            padding: 1rem;
+            margin: 0.5rem;
+        }
+
+        .wizard_footer {
+            padding: 1rem;
+            margin: 0.5rem;
+            flex-direction: column;
+
+            .footer_actions_left,
+            .footer_actions_right,
+            .footer_actions_center {
+                width: 100%;
+
+                button {
+                    flex: 1;
+                }
+            }
+        }
+    }
+}

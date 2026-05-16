@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- List View -->
+        <record id="learning_content_list_view" model="ir.ui.view">
+            <field name="name">Learning Content List</field>
+            <field name="model">learning.content</field>
+            <field name="arch" type="xml">
+                <list string="Learning Content">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="content_type"/>
+                    <field name="view_type"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="learning_content_form_view" model="ir.ui.view">
+            <field name="name">Learning Content Form</field>
+            <field name="model">learning.content</field>
+            <field name="arch" type="xml">
+                <form string="Learning Content">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <!-- <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                            </button> -->
+                        </div>
+                        <group>
+                            <group>
+                                <field name="name" required="True"/>
+                                <field name="content_type" required="True"/>
+                                <field name="url"/>
+                            </group>
+                            <group>
+                                <field name="view_type"/>
+                                <field name="model" />
+                                <field name="sequence"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Description">
+                                <field name="description"/>
+                            </page>
+                            <page string="Related Modules">
+                                <field name="module_ids" nolabel="1"/>
+                            </page>
+                           
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Search View -->
+        <record id="learning_content_search_view" model="ir.ui.view">
+            <field name="name">Learning Content Search</field>
+            <field name="model">learning.content</field>
+            <field name="arch" type="xml">
+                <search string="Learning Content">
+                    <field name="name" string="Title"/>
+                    <field name="description"/>
+                    <field name="module_ids"/>
+                    <separator/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_content_type" string="Content Type" context="{'group_by': 'content_type'}"/>
+                        <filter name="group_by_view_type" string="View Type" context="{'group_by': 'view_type'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_learning_content" model="ir.actions.act_window">
+            <field name="name">Learning Content</field>
+            <field name="res_model">learning.content</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first Learning Content
+                </p>
+                <p>
+                    Create learning materials like videos, articles, and interactive content for your users.
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

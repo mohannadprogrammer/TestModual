@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <!-- Step 5: Accounting Configuration -->
+    <t t-name="onboarding_wizard.AccountingConfigStep">
+        <div class="wizard_step accounting_config_step">
+            <h2>Accounting Configuration</h2>
+
+            <!-- Fiscal Localization & Chart of Accounts -->
+            <div class="accounting_section">
+                <h3>Fiscal Configuration</h3>
+
+                <div class="form_row">
+                    <div class="form_group flex-1">
+                        <label>Fiscal Localization *</label>
+                        <select 
+                            class="form_control" 
+                            t-model="state.fiscalLocalization"
+                            t-on-change="(e) => this.handleInputChange('fiscalLocalization', e.target.value)">
+                            <option value="">Select Fiscal Localization</option>
+                            <option value="sa">Saudi Arabia</option>
+                            <option value="uae">United Arab Emirates</option>
+                            <option value="eg">Egypt</option>
+                            <option value="jo">Jordan</option>
+                            <option value="generic">Generic</option>
+                        </select>
+                    </div>
+                    <div class="form_group flex-1">
+                        <label>Chart of Accounts *</label>
+                        <select 
+                            class="form_control" 
+                            t-model="state.chartOfAccounts"
+                            t-on-change="(e) => this.handleInputChange('chartOfAccounts', e.target.value)">
+                            <option value="">Select Chart of Accounts</option>
+                            <option value="simple">Simple Chart</option>
+                            <option value="professional">Professional Chart</option>
+                            <option value="fullscale">Full Scale Chart</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ZATCA Configuration -->
+            <div class="zatca_section">
+                <h3>ZATCA Configuration (Tax Authority - Saudi Arabia)</h3>
+                
+                <div class="form_row">
+                    <div class="form_group flex-1">
+                        <label>
+                            <input 
+                                type="checkbox" 
+                                t-model="state.zatcaEnabled"
+                                t-on-change="() => this.toggleZATCA()" />
+                            Enable ZATCA Integration
+                        </label>
+                    </div>
+                </div>
+
+                <t t-if="state.zatcaEnabled">
+                    <div class="form_row zatca_fields">
+                        <div class="form_group flex-1">
+                            <label>ZATCA API URL *</label>
+                            <input
+                                type="url"
+                                class="form_control"
+                                placeholder="https://api.zatca.gov.sa/..."
+                                t-model="state.zatcaApiUrl"
+                                t-on-change="(e) => this.handleInputChange('zatca_api_url', e.target.value)" />
+                        </div>
+                        <div class="form_group flex-1">
+                            <label>ZATCA API Key *</label>
+                            <input
+                                type="password"
+                                class="form_control"
+                                placeholder="Enter your API key"
+                                t-model="state.zatcaApiKey"
+                                t-on-change="(e) => this.handleInputChange('zatca_api_key', e.target.value)" />
+                        </div>
+                    </div>
+                </t>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="payment_methods_section">
+                <h3>Payment Methods</h3>
+
+                <div class="add_payment_method_form">
+                    <div class="form_row">
+                        <div class="form_group flex-1">
+                            <label>Payment Method Name</label>
+                            <input
+                                type="text"
+                                class="form_control"
+                                placeholder="e.g., Cash, Check, Transfer"
+                                t-model="state.newPaymentMethod.name" />
+                        </div>
+                        <div class="form_group flex-1">
+                            <label>Code</label>
+                            <input
+                                type="text"
+                                class="form_control"
+                                placeholder="e.g., CASH, CHK, BANK"
+                                t-model="state.newPaymentMethod.code" />
+                        </div>
+                        <div class="form_group" style="align-self: flex-end;">
+                            <button 
+                                class="btn btn-primary"
+                                t-on-click="() => this.addPaymentMethod()">
+                                Add Method
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <t t-if="state.paymentMethods.length > 0">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Code</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="state.paymentMethods" t-as="method" t-key="method.id">
+                                <td><t t-esc="method.name" /></td>
+                                <td><t t-esc="method.code" /></td>
+                                <td>
+                                    <button 
+                                        class="btn btn-sm btn-danger"
+                                        t-on-click="() => this.removePaymentMethod(method.id)">
+                                        Remove
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </t>
+            </div>
+
+            <!-- Bank Accounts -->
+            <div class="bank_accounts_section">
+                <h3>Bank Accounts</h3>
+
+                <div class="add_bank_account_form">
+                    <div class="form_row">
+                        <div class="form_group flex-1">
+                            <label>Account Name</label>
+                            <input
+                                type="text"
+                                class="form_control"
+                                placeholder="e.g., Main Business Account"
+                                t-model="state.newBankAccount.name" />
+                        </div>
+                        <div class="form_group flex-1">
+                            <label>Account Number</label>
+                            <input
+                                type="text"
+                                class="form_control"
+                                placeholder="Account number"
+                                t-model="state.newBankAccount.account_number" />
+                        </div>
+                    </div>
+
+                    <div class="form_row">
+                        <div class="form_group flex-1">
+                            <label>Bank Name</label>
+                            <input
+                                type="text"
+                                class="form_control"
+                                placeholder="e.g., Saudi National Bank"
+                                t-model="state.newBankAccount.bank_name" />
+                        </div>
+                        <div class="form_group flex-1">
+                            <label>Currency</label>
+                            <select 
+                                class="form_control"
+                                t-model="state.newBankAccount.currency_id">
+                                <option value="">Select Currency</option>
+                                <t t-foreach="state.currencies" t-as="currency" t-key="currency.id">
+                                    <option t-attf-value="{{currency.id}}">
+                                        <t t-esc="currency.name" /> (<t t-esc="currency.code" />)
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+                        <div class="form_group" style="align-self: flex-end;">
+                            <button 
+                                class="btn btn-primary"
+                                t-on-click="() => this.addBankAccount()">
+                                Add Account
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <t t-if="state.bankAccounts.length > 0">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Account Number</th>
+                                <th>Bank</th>
+                                <th>Currency</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="state.bankAccounts" t-as="account" t-key="account.id">
+                                <td><t t-esc="account.name" /></td>
+                                <td><t t-esc="account.account_number" /></td>
+                                <td><t t-esc="account.bank_name" /></td>
+                                <td><t t-esc="account.currency_id" /></td>
+                                <td>
+                                    <button 
+                                        class="btn btn-sm btn-danger"
+                                        t-on-click="() => this.removeBankAccount(account.id)">
+                                        Remove
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </t>
+            </div>
+
+            <!-- Taxes Configuration -->
+            <div class="taxes_section">
+                <h3>Taxes</h3>
+                <p class="text-muted">Tax configuration will be set up based on the selected fiscal localization.</p>
+                <div class="alert alert-info">
+                    <strong>Note:</strong> Default taxes for <t t-esc="state.fiscalLocalization || 'selected region'" /> will be automatically created.
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>

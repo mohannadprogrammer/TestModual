@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <!-- Step 3: Business Activity Selection -->
+    <t t-name="onboarding_wizard.BusinessActivityStep">
+        <div class="wizard_step business_activity_step">
+            <h2>Business Activity</h2>
+            <p class="step_subtitle">Select your primary business type</p>
+
+            <div class="business_types_grid">
+                <t t-foreach="state.businessTypes" t-as="type" t-key="type.id">
+                    <div
+                       t-attf-class="business_type_card {{ state.selectedType === type.id ? 'selected' : '' }}"
+                        t-on-click="() => this.selectBusinessType(type.id)"
+                        
+                    >
+                        <div class="type_icon" t-esc="type.icon" />
+                        <h4 t-esc="type.name" />
+                        <p>Click to select</p>
+                    </div>
+                </t>
+            </div>
+
+            <t t-if="state.selectedType">
+                <div class="recommended_modules_section">
+                    <h3>Recommended Modules</h3>
+                    <p>These modules will be automatically installed for your business type:</p>
+
+                    <t t-if="state.loading">
+                        <div class="loading_text">Loading modules...</div>
+                    </t>
+
+                    <div class="modules_list">
+                        <t t-foreach="state.recommendedModules" t-as="mod"  t-key="mod.id">
+                            <div class="module_item">
+                                <input
+                                    type="checkbox"
+                                    checked="checked"
+                                />
+                                <label  t-esc="mod.shortdesc" />
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </t>
+
+            <div class="form_actions">
+                <button class="btn btn-outline-secondary" t-on-click="props.onPrevious">
+                    ← Previous
+                </button>
+                <button
+                    class="btn btn-primary"
+                    t-on-click="() => {
+                    this.installRecommendedModules();
+                    props.onNext();}"
+                    t-att-disabled="!state.selectedType"
+                >
+                    Next →
+                </button>
+            </div>
+        </div>
+    </t>
+
+</templates>

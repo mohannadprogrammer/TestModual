@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Menu Item -->
+        <menuitem id="menu_learning_content_root" name="Learning Content" parent="" sequence="100"/>
+
+        <menuitem id="menu_learning_content" name="Learning Materials" parent="menu_learning_content_root" 
+                  action="action_learning_content" sequence="1"/>
+    </data>
+</odoo>

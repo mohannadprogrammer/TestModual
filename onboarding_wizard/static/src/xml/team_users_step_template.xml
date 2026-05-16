@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <!-- Step 4: Team & Users -->
+    <t t-name="onboarding_wizard.TeamUsersStep">
+        <div class="wizard_step team_users_step">
+            
+            
+
+            <div class="team_section">
+            <h2>Team &amp; Users</h2>
+                <div class="add_employee_form">
+                    <h3>Add Team Member</h3>
+
+                    <div class="form_row">
+                        <div class="form_group flex-1">
+                            <label>Name *</label>
+                            <input
+                                type="text"
+                                class="form_control"
+                                placeholder="Employee name"
+                                t-model="state.newEmployee.name"
+                            />
+                        </div>
+                        <div class="form_group flex-1">
+                            <label>Email *</label>
+                            <input
+                                type="email"
+                                class="form_control"
+                                placeholder="email@company.com"
+                                t-model="state.newEmployee.email"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form_row">
+                        <div class="form_group flex-1">
+                            <label>Job Title</label>
+                            <input
+                                type="text"
+                                class="form_control"
+                                placeholder="e.g., Manager"
+                                t-model="state.newEmployee.job_title"
+                            />
+                        </div>
+                        <div class="form_group flex-1">
+                            <label>Department</label>
+                            <select class="form_control" t-model="state.newEmployee.department_id">
+                                <option value="">Select Department</option>
+                                <t t-foreach="state.departments" t-as="dept" t-key="dept.id">
+                                    <option t-esc="dept.name" t-att-value="dept.id" />
+                                </t>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form_group">
+                        <label>Roles</label>
+                        <select
+                            class="form_control"
+                            multiple="multiple"
+                            t-model="state.newEmployee.role_ids"
+                        >
+                            <t t-foreach="state.roles" t-as="role" t-key="role.id">
+                                <option t-esc="role.name" t-att-value="role.id" />
+                            </t>
+                        </select>
+                    </div>
+
+                    <button class="btn btn-primary mt-3" t-on-click="() => this.addEmployee()">
+                        + Add Employee
+                    </button>
+                </div>
+                <h3 style="
+    padding: 10px 0;
+">Added Employees (<t t-esc="state.employees.length" />)</h3>
+                <div class="employees_list">
+                    
+
+                    <t t-if="state.employees.length === 0">
+                        <p class="empty_state">No employees added yet</p>
+                    </t>
+                    
+                    <t t-foreach="state.employees" t-as="emp" t-key="emp.id">
+                        <div class="employee_card" >
+                            <div class="employee_info">
+                                <h4 t-esc="emp.name" />
+                                <p t-esc="emp.email" />
+                                <small t-if="emp.job_title" t-esc="emp.job_title" />
+                            </div>
+                            <button
+                                class="btn btn-sm btn-danger"
+                                t-on-click="() => this.removeEmployee(emp.id)"
+                            >
+                                Remove
+                            </button>
+                        </div>
+                    </t>
+                    
+                </div>
+                <div class="form_actions">
+                <button class="btn btn-outline-secondary" t-on-click="props.onPrevious">
+                    ← Previous
+                </button>
+                <button class="btn btn-primary" t-on-click="props.onNext">
+                    Next →
+                </button>
+            </div>
+            </div>
+
+            
+        </div>
+    </t>
+
+</templates>

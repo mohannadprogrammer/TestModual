@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <!-- Main Wizard Component (Popup Modal) -->
+    <t t-name="onboarding_wizard.OnboardingWizard">
+        <t t-if="state.showWizard">
+            <div class="o_onboarding_wizard_popup_container">
+                <!-- Modal Backdrop -->
+                <div class="o_onboarding_wizard_backdrop" t-on-click="closeWizard" />
+                
+                <!-- Modal Content -->
+                <div class="o_onboarding_wizard_modal_content">
+                <div class="o_onboarding_wizard">
+                    <!-- Header with Title and Progress -->
+                    <div class="wizard_header">
+                        <div class="wizard_header_top">
+                            <div class="wizard_title">
+                                <h1>Odoo Setup Wizard</h1>
+                                <p class="wizard_subtitle">Let's get your business ready</p>
+                            </div>
+                            <div class="wizard_progress_badge">
+                                <span t-esc="state.current_step + 1" /> / <span t-esc="6" />
+                            </div>
+                            <!-- Close Button -->
+                            <button class="wizard_close_btn" t-on-click="closeWizard" title="Close wizard">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+
+                        <!-- Steps Navigation Tabs -->
+                        <div class="wizard_steps_nav">
+                            <div t-attf-class="step_nav_item {{ state.current_step >= 0 ? 'completed' : '' }} {{ state.current_step === 0 ? 'active' : '' }}" t-on-click="() => this.goToStep(0)">
+                                <div class="step_nav_circle">1</div>
+                                <p class="step_nav_name">Welcome</p>
+                            </div>
+                            <div t-attf-class="step_nav_item {{ state.current_step >= 1 ? 'completed' : '' }} {{ state.current_step === 1 ? 'active' : '' }}" t-on-click="() => this.goToStep(1)">
+                                <div class="step_nav_circle">2</div>
+                                <p class="step_nav_name">Company</p>
+                            </div>
+                            <div t-attf-class="step_nav_item {{ state.current_step >= 2 ? 'completed' : '' }} {{ state.current_step === 2 ? 'active' : '' }}" t-on-click="() => this.goToStep(2)">
+                                <div class="step_nav_circle">3</div>
+                                <p class="step_nav_name">Business</p>
+                            </div>
+                            <div t-attf-class="step_nav_item {{ state.current_step >= 3 ? 'completed' : '' }} {{ state.current_step === 3 ? 'active' : '' }}" t-on-click="() => this.goToStep(3)">
+                                <div class="step_nav_circle">4</div>
+                                <p class="step_nav_name">Team</p>
+                            </div>
+                            <div t-attf-class="step_nav_item {{ state.current_step >= 4 ? 'completed' : '' }} {{ state.current_step === 4 ? 'active' : '' }}" t-on-click="() => this.goToStep(4)">
+                                <div class="step_nav_circle">5</div>
+                                <p class="step_nav_name">Accounting</p>
+                            </div>
+                            <div t-attf-class="step_nav_item {{ state.current_step >= 5 ? 'completed' : '' }} {{ state.current_step === 5 ? 'active' : '' }}" t-on-click="() => this.goToStep(5)">
+                                <div class="step_nav_circle">6</div>
+                                <p class="step_nav_name">Finish</p>
+                            </div>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div class="wizard_progress_bar_container">
+                            <div class="wizard_progress_bar">
+                                <div
+                                    class="wizard_progress_fill"
+                                    t-attf-style="width: {{ (state.current_step + 1) * 16.66 }}%"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content Area -->
+                    <div class="wizard_content">
+                        <t t-if="state.current_step === 0">
+                            <WelcomeStep onNext.bind="nextStep" onSkip.bind="skipWizard" />
+                        </t>
+                        <t t-elif="state.current_step === 1">
+                            <CompanyInfoStep onNext.bind="nextStep" onPrevious.bind="previousStep" companyInfo="state.companyInfo" 
+                            countries="state.countries" 
+                            currencies="state.currencies" 
+                            updateFormData="()=>console.log('Data updated')"
+                            />
+                        </t>
+                        <t t-elif="state.current_step === 2">
+                            <BusinessActivityStep onNext.bind="nextStep" onPrevious.bind="previousStep"  updateFormData="()=>console.log('Data updated')"/>
+                        </t>
+                        <t t-elif="state.current_step === 3">
+                            <TeamUsersStep onNext.bind="nextStep" onPrevious.bind="previousStep" />
+                        </t>
+                        <t t-elif="state.current_step === 4">
+                            <AccountingConfigStep onNext.bind="nextStep" onPrevious.bind="previousStep" 
+                            accountingConfig="state.accountingConfig" 
+                            countries="state.countries" 
+                            updateFormData="()=>console.log('Data updated')" />
+                        </t>
+                        <t t-elif="state.current_step === 5">
+                            <FinalStep onComplete.bind="completeWizard" onPrevious.bind="previousStep" />
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+    </t>
+
+   
+    
+
+
+</templates>
+

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <!-- Step 1: Welcome -->
+    <t t-name="onboarding_wizard.WelcomeStep">
+        <div class="wizard_step welcome_step">
+            <div class="welcome_content">
+                <div class="welcome_icon">🚀</div>
+                <h2>Welcome to Odoo Setup</h2>
+                <p class="welcome_message">
+                    We'll guide you through a quick setup process to get your Odoo instance ready for your business.
+                </p>
+
+                <div class="welcome_features">
+                    <div class="feature_item">
+                        <span class="feature_icon">⏱️</span>
+                        <div>
+                            <strong>Quick Setup</strong>
+                            <p t-if="estimatedDuration">Takes about <t t-esc="estimatedDuration" /> minutes</p>
+                            <p t-else="">Takes about 30 minutes</p>
+                        </div>
+                    </div>
+                    <div class="feature_item">
+                        <span class="feature_icon">📋</span>
+                        <div>
+                            <strong>Easy Process</strong>
+                            <p>Step-by-step guided configuration</p>
+                        </div>
+                    </div>
+                    <div class="feature_item">
+                        <span class="feature_icon">✨</span>
+                        <div>
+                            <strong>Auto-Save</strong>
+                            <p>Your progress is automatically saved</p>
+                        </div>
+                    </div>
+                    <div class="feature_item">
+                        <span class="feature_icon">🔄</span>
+                        <div>
+                            <strong>Resume Anytime</strong>
+                            <p>Continue where you left off</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="welcome_checkbox">
+                    <input
+                        type="checkbox"
+                        id="agree_terms"
+                        t-model="state.agreeToTerms"
+                    />
+                    <label for="agree_terms">
+                        I agree to proceed with the setup wizard
+                    </label>
+                </div>
+
+                <button
+                    class="btn btn-primary btn-lg"
+                    t-on-click="handleNext"
+                    t-att-disabled="!state.agreeToTerms"
+                >
+                    Let's Begin →
+                </button>
+            </div>
+
+            <div class="welcome_image">
+                <img
+                    src="/onboarding_wizard/static/src/img/welcome_illustration.svg"
+                    alt="Welcome"
+                />
+            </div>
+        </div>
+    </t>
+
+</templates>

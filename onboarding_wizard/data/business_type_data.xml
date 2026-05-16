@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Sales -->
+        <record id="business_type_sales" model="business.type">
+            <field name="name">Sales</field>
+            <field name="icon">💼</field>
+            <field name="description">Sales and Distribution Business</field>
+            <field name="recommended_modules"
+                   eval="[(6, 0, [
+                        ref('base.module_sale_management'),
+                        ref('base.module_crm'),
+                        ref('base.module_account'),
+                        ref('base.module_stock'),
+                        ref('base.module_delivery'),
+                        ref('base.module_sale_crm')
+                   ])]"/>
+        </record>
+
+        <!-- Services -->
+        <record id="business_type_services" model="business.type">
+            <field name="name">Services</field>
+            <field name="icon">🔧</field>
+            <field name="description">Service-based Business</field>
+            <field name="recommended_modules"
+                   eval="[(6, 0, [
+                        ref('base.module_project'),
+                        ref('base.module_hr_timesheet'),
+                        ref('base.module_account'),
+                        ref('base.module_crm'),
+                        ref('base.module_helpdesk'),
+                        ref('base.module_sale_timesheet')
+                   ])]"/>
+        </record>
+
+        <!-- Manufacturing -->
+        <record id="business_type_manufacturing" model="business.type">
+            <field name="name">Manufacturing</field>
+            <field name="icon">🏭</field>
+            <field name="description">Manufacturing Business</field>
+            <field name="recommended_modules"
+                   eval="[(6, 0, [
+                        ref('base.module_mrp'),
+                        ref('base.module_stock'),
+                        ref('base.module_purchase'),
+                        ref('base.module_account'),
+                        ref('base.module_maintenance'),
+                        ref('base.module_quality')
+                   ])]"/>
+        </record>
+
+        <!-- Retail -->
+        <record id="business_type_retail" model="business.type">
+            <field name="name">Retail</field>
+            <field name="icon">🛍️</field>
+            <field name="description">Retail Business</field>
+            <field name="recommended_modules"
+                   eval="[(6, 0, [
+                        ref('base.module_point_of_sale'),
+                        ref('base.module_stock'),
+                        ref('base.module_account'),
+                        ref('base.module_sale_management'),
+                        ref('base.module_website_sale'),
+                        ref('base.module_loyalty')
+                   ])]"/>
+        </record>
+
+        <!-- Other -->
+        <record id="business_type_other" model="business.type">
+            <field name="name">Other</field>
+            <field name="icon">📦</field>
+            <field name="description">Other Business Type</field>
+            <field name="recommended_modules"
+                   eval="[(6, 0, [
+                        ref('base.module_account'),
+                        ref('base.module_stock'),
+                        ref('base.module_sale_management'),
+                        ref('base.module_purchase'),
+                        ref('base.module_crm')
+                   ])]"/>
+        </record>
+
+    </data>
+</odoo>

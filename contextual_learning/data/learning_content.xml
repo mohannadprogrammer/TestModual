@@ -1,0 +1,47 @@
+<data>
+<record id="crm_lead_form_learning" model="learning.content">
+
+    <field name="name">
+        CRM Lead Tutorial
+    </field>
+
+    <field name="description">
+        Learn how to create your first lead
+    </field>
+
+    <field name="model_name">
+        crm.lead
+    </field>
+
+    <field name="view_type">
+        form
+    </field>
+
+    <field name="video_url">
+        https://www.youtube.com/watch?v=FaCHKe4H0rE
+    </field>
+
+</record>
+<!-- record for sale.order -->
+<record id="sale_order_form_learning" model="learning.content">
+
+    <field name="name">
+        Sale Order Tutorial
+    </field>
+
+    <field name="description">
+        Learn how to create your first sale order
+    </field>
+
+    <field name="model_name">
+        sale.order
+    </field>
+
+    <field name="view_type">
+        list
+    </field>
+
+    <field name="video_url">
+        https://www.youtube.com/watch?v=FaCHKe4H0rE
+    </field>
+</data>

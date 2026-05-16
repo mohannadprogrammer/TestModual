@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Menu Item -->
+        <menuitem id="menu_business_type_root" name="Business Type" parent=""/>
+
+        <menuitem id="menu_business_type" name="Business Types" parent="menu_business_type_root" 
+                  action="action_business_type" sequence="1"/>
+    </data>
+</odoo>

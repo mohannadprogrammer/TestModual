@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- list View -->
+        <record id="business_type_list_view" model="ir.ui.view">
+            <field name="name">Business Type list</field>
+            <field name="model">business.type</field>
+            <field name="arch" type="xml">
+                <list string="Business Types">
+                    <field name="name"/>
+                    <field name="icon"/>
+                    <field name="description"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="business_type_form_view" model="ir.ui.view">
+            <field name="name">Business Type Form</field>
+            <field name="model">business.type</field>
+            <field name="arch" type="xml">
+                <form string="Business Type">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" required="True"/>
+                                <field name="icon"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="description"/>
+                            </page>
+                            <page string="Recommended Modules">
+                                <field name="recommended_modules"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Search View -->
+        <record id="business_type_search_view" model="ir.ui.view">
+            <field name="name">Business Type Search</field>
+            <field name="model">business.type</field>
+            <field name="arch" type="xml">
+                <search string="Business Types">
+                    <field name="name" string="Business Type"/>
+                    <field name="description"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_business_type" model="ir.actions.act_window">
+            <field name="name">Business Types</field>
+            <field name="res_model">business.type</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Business Type
+                </p>
+                <p>
+                    Define your business types to categorize and configure onboarding.
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

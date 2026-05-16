@@ -15,11 +15,12 @@
             tutorials, short videos, tips, and onboarding content dynamically according to the
             user's current context.
             """,
-    'depends': ['web'],
+    'depends': ['base','web','sale'],
     'data': [
         'security/ir.model.access.csv',
         'views/learning_content_views.xml',
         'views/learning_content_menu.xml',
+        # 'data/learning_content.xml',
     ],
     'assets':{
         'web.assets_backend':[

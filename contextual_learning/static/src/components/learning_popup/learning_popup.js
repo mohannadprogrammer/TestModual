@@ -12,6 +12,9 @@ export class LearningPopup extends Component {
 
         this.popupService =
             useService("learning_popup");
+        this.contextService =
+            useService("contextual_learning");
+        this.orm = useService("orm");
 
         /**
          * Bind methods
@@ -19,14 +22,6 @@ export class LearningPopup extends Component {
         this.state = useState(this.popupService.state);
 
 
-        this.closePopup =
-            this.closePopup.bind(this);
-
-        // this.minimizePopup =
-        //     this.minimizePopup.bind(this);
-
-        // this.expandPopup =
-        //     this.expandPopup.bind(this);
     }
 
     closePopup = () => {
@@ -44,4 +39,6 @@ export class LearningPopup extends Component {
         console.log("Expanding popup:", this);
         this.popupService.expand();
     }
+
+
 }

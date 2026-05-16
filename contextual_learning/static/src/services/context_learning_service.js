@@ -41,7 +41,7 @@ export const contextualLearningService = {
         /**
          * Extract current context from action manager
          */
-        const updateContext = () => {
+        const updateContext = async () => {
 
             try {
 
@@ -73,13 +73,36 @@ export const contextualLearningService = {
                 learningContext.currentMenuId =
                     null;
 
-                console.log("Learning Context Updated:", {
-                    model: learningContext.currentModel,
-                    view: learningContext.currentViewType,
-                    action: learningContext.currentActionId,
-                    menu: learningContext.currentMenuId,
-                    resId: learningContext.currentResId,
+                console.log("Learning Context Updated:", learningContext.currentModel);
+                //update the popup service with new content based on the context
+                const popup = env.services.learning_popup;
+
+                const content = await orm.searchRead(
+                    "learning.content",
+                    [["model.model", "=", learningContext.currentModel]],
+                    ["model_name", "model", "view_type", "display_name", "description", "url"]
+                ).then((contents) => {
+                    console.log("###########", contents);
+                    if (contents.length > 0) {
+                        const content = contents[0];
+                        popup.show({
+                            title: content.display_name,
+                            description: content.description,
+                            video_url: convertYoutubeUrl(content.url),
+                        });
+
+                        return content;
+                        // console.log("Showing learning popup for content:", content);
+                    } else {
+                        popup.hide();
+                        // console.log("No learning content found for current context.");
+                        return [];
+                    }
+                }).catch((error) => {
+                    console.error("Error loading learning content:", error);
                 });
+
+
 
             } catch (error) {
 
@@ -94,36 +117,16 @@ export const contextualLearningService = {
          * Listen for action changes
          */
         env.bus.addEventListener("ACTION_MANAGER:UI-UPDATED", updateContext);
-
-        /**
-         * read from database model  learing.content and show popup if there is any content with current context
-         */
-        const popup = env.services.learning_popup;
-        const content = await orm.searchRead("learning.content", [
-        ], []).then((contents) => {
-            console.log("Learning contents for current context:", contents);
-            if (contents.length > 0) {
-                const content = contents[0];
-
-
-
-                return content;
-                // console.log("Showing learning popup for content:", content);
-            }
-        }).catch((error) => {
-            console.error("Error loading learning content:", error);
-        });
-        console.log("Contentttttttttttttt", content);
-        popup.show({
-            title: content.display_name,
-            description: content.description,
-            video_url: convertYoutubeUrl(content.url),
-        });
-
         /**
          * Initial context detection
          */
-        setTimeout(updateContext, 0);
+        await setTimeout(updateContext, 300);
+        /**
+         * read from database model  learing.content and show popup if there is any content with current context
+         */
+
+
+
 
         return {
             context: learningContext,

@@ -31,10 +31,6 @@ export class OnboardingWizard extends Component {
             current_step: 0,
             completion_score: 0,
             total_users_created: 0,
-            companyInfo: {},
-            accountingConfig: {},
-            countries: [],
-            currencies: [],
             showWizard: true,
         });
         this.loadInitialData();
@@ -45,24 +41,9 @@ export class OnboardingWizard extends Component {
             this.state.showWizard = completion.onboarding_wizard_completed === false && completion.onboarding_wizard_skipped === false;
             this.state.current_step = completion.onboarding_wizard_current_step || 0;
 
-            console.log("Initial completion score:", completion);
+
             this.state.completion_score = completion || 0;
-            const countries = await this.orm.call("res.country", "search_read", [[], ["name"]]);
-            const currencies = await this.orm.call("res.currency", "search_read", [[], ["name"]]);
-            // company info from database if exists
-            const companyInfo = await this.orm.call("res.company", "search_read", [[], []]);
-            this.state.countries = countries;
-            this.state.currencies = currencies;
-            this.state.companyInfo = companyInfo[0] || {};
-            // Load accounting configuration if exists
-            if (companyInfo[0] && companyInfo[0].accounting_config) {
-                try {
-                    this.state.accountingConfig = JSON.parse(companyInfo[0].accounting_config);
-                } catch (e) {
-                    console.warn("Could not parse accounting config:", e);
-                }
-            }
-            console.log("Company info loaded:", this.state.companyInfo);
+
         } catch (error) {
             console.error("Error loading data:", error);
         }
@@ -81,7 +62,6 @@ export class OnboardingWizard extends Component {
                     }
                 ]
             );
-            console.log("Settings updated to skip wizard:", settingsId);
             await this.orm.call(
                 "res.config.settings",
                 "set_values",
@@ -127,7 +107,6 @@ export class OnboardingWizard extends Component {
                 }
             ]
         );
-        console.log("Settings updated to skip wizard:", settingsId);
         await this.orm.call(
             "res.config.settings",
             "set_values",

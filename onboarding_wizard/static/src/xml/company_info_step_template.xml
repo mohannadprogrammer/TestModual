@@ -16,7 +16,7 @@
                         <input
                             type="text"
                             class="form_control"
-                            t-model="props.companyInfo.name"
+                            t-model="state.companyInfo.name"
                             placeholder="Enter company name"
                         />
                     </div>
@@ -27,7 +27,7 @@
                             type="text"
                             class="form_control"
                             placeholder="Enter street address"
-                            t-model="props.companyInfo.street"
+                            t-model="state.companyInfo.street"
                         />
                     </div>
 
@@ -37,7 +37,7 @@
                             type="text"
                             class="form_control"
                             placeholder="Enter street 2 (optional)"
-                            t-model="props.companyInfo.street2"
+                            t-model="state.companyInfo.street2"
                         />
                     </div>
 
@@ -47,7 +47,7 @@
                             type="text"
                             class="form_control"
                             placeholder="Enter city"
-                            t-model="props.companyInfo.city"
+                            t-model="state.companyInfo.city"
                         />
                     </div>
 
@@ -56,10 +56,10 @@
                             <label>Country *</label>
                             <select
                                 class="form_control"
-                                t-model="props.companyInfo.country_id"
+                                t-model="state.companyInfo.country_id"
                             >
                                 <option value="">Select Country</option>
-                                <t t-foreach="props.countries" t-as="country" t-key="country.id">
+                                <t t-foreach="state.countries" t-as="country" t-key="country.id">
                                     <option t-esc="country.name" t-att-value="country.id" />
                                 </t>
                             </select>
@@ -69,10 +69,10 @@
                             <label>Currency *</label>
                             <select
                                 class="form_control"
-                                t-model="props.companyInfo.currency_id"
+                                 t-model="state.currency_id[0]"
                             >
                                 <option value="">Select Currency</option>
-                                <t t-foreach="props.currencies" t-as="currency" t-key="currency.id">
+                                <t t-foreach="state.currencies" t-as="currency" t-key="currency.id" t-value="state.companyInfo.currency_id">
                                     <option t-esc="currency.name" t-att-value="currency.id" />
                                 </t>
                             </select>
@@ -80,15 +80,7 @@
                     </div>
 
                     <div class="form_row">
-                        <div class="form_group">
-                            <label>Timezone</label>
-                            <input
-                                type="text"
-                                class="form_control"
-                                placeholder="e.g., Asia/Dubai"
-                                t-model="props.companyInfo.tz"
-                            />
-                        </div>
+                        
 
                         <div class="form_group">
                             <label>VAT Number</label>
@@ -96,7 +88,7 @@
                                 type="text"
                                 class="form_control"
                                 placeholder="Enter VAT number"
-                                t-model="props.companyInfo.vat"
+                                t-model="state.companyInfo.vat"
                             />
                         </div>
                     </div>
@@ -109,7 +101,7 @@
                             <span>📷</span>
                             <p>No logo uploaded</p>
                            
-                                <img t-att-src="'data:image/png;base64,' + props.companyInfo.logo"
+                                <img t-att-src="'data:image/png;base64,' + state.companyInfo.logo"
                                      alt="Logo Preview" class="logo_preview" />
                             
                         </div>

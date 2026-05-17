@@ -28,7 +28,7 @@ export class OnboardingWizard extends Component {
     setup() {
         this.orm = useService("orm");
         this.state = useState({
-            current_step: 3,
+            current_step: 0,
             completion_score: 0,
             total_users_created: 0,
             companyInfo: {},
@@ -41,6 +41,10 @@ export class OnboardingWizard extends Component {
     }
     async loadInitialData() {
         try {
+            const completion = await this.orm.call("res.config.settings", "get_values", [[]]);
+            this.state.showWizard = completion.onboarding_wizard_completed === false && completion.onboarding_wizard_skipped === false;
+            console.log("Initial completion score:", completion);
+            this.state.completion_score = completion || 0;
             const countries = await this.orm.call("res.country", "search_read", [[], ["name"]]);
             const currencies = await this.orm.call("res.currency", "search_read", [[], ["name"]]);
             // company info from database if exists
@@ -92,9 +96,26 @@ export class OnboardingWizard extends Component {
     /**
      * Skip the wizard
      */
-    skipWizard() {
+    async skipWizard() {
         console.log("Wizard skipped");
-        // Add logic to close wizard or mark as skipped
+        this.state.showWizard = false;
+
+        //save in database that user skipped the wizard
+        const settingsId = await this.orm.create(
+            "res.config.settings",
+            [
+                {
+                    onboarding_wizard_skipped: true,
+                }
+            ]
+        );
+        console.log("Settings updated to skip wizard:", settingsId);
+        await this.orm.call(
+            "res.config.settings",
+            "set_values",
+            [settingsId]
+        );
+        // // Add logic to close wizard or mark as skipped
     }
 
     /**
@@ -103,7 +124,11 @@ export class OnboardingWizard extends Component {
     completeWizard() {
         console.log("Wizard completed");
         this.state.current_step = 5;
+
         // Add logic to save completion status
+        this.orm.call("res.config.settings", "set_values", [{
+            onboarding_wizard_completed: true,
+        }]);
     }
 
     /**
@@ -115,4 +140,7 @@ export class OnboardingWizard extends Component {
         this.state.showWizard = false;
         // You can also add logic to save progress before closing
     }
+    /**
+     * s
+     */
 }

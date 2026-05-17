@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Settings Form View -->
+        <record id="res_config_settings_form_inherit" model="ir.ui.view">
+            <field name="name">Settings - Onboarding Wizard</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//block[@name='companies_setting_container']" position="after">
+                    <block title="Onboarding Wizard" name="onboarding_wizard_setting_container">
+                        <setting>
+                            <field name="onboarding_wizard_completed"/>
+                            <div class="content-group">
+                                <div class="mt16">
+                                    <label for="onboarding_wizard_completed" string="Onboarding Wizard Completed"/>
+                                    <p class="text-muted">Mark the onboarding wizard as completed for new users</p>
+                                </div>
+                            </div>
+                        </setting>
+                        <setting>
+                            <field name="onboarding_wizard_skipped"/>
+                            <div class="content-group">
+                                <div class="mt16">
+                                    <label for="onboarding_wizard_skipped" string="Onboarding Wizard Skipped"/>
+                                    <p class="text-muted">Skip the onboarding wizard on next login</p>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

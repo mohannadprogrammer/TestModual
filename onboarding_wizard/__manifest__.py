@@ -24,6 +24,7 @@
         'data/business_type_data.xml',
         'views/business_type_views.xml',
         'views/business_type_menu.xml',
+        'views/res_config_settings_views.xml',
     ],
     'assets': {
        'web.assets_backend': [

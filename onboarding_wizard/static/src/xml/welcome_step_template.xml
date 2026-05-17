@@ -61,6 +61,12 @@
                 >
                     Let's Begin →
                 </button>
+                    <button
+                        class="btn btn-link skip_button"
+                        t-on-click="skipWizard"
+                    >
+                        Skip 
+                    </button>
             </div>
 
             <div class="welcome_image">

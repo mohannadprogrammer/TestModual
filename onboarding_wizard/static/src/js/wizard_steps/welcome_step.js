@@ -22,4 +22,9 @@ export class WelcomeStep extends Component {
             this.props.onNext();
         }
     }
+    skipWizard() {
+        console.log("Wizard skipped from welcome step");
+        this.props.onSkip();
+    }
+
 }

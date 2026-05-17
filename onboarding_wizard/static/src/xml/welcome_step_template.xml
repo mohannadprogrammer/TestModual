@@ -71,7 +71,7 @@
 
             <div class="welcome_image">
                 <img
-                    src="/onboarding_wizard/static/src/img/welcome_illustration.svg"
+                    src="/onboarding_wizard/static/src/img/hero-image.png"
                     alt="Welcome"
                 />
             </div>

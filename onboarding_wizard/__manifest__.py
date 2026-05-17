@@ -9,7 +9,7 @@
             Test 2 Odoo Senior 2
             ========================
 
-                a modular onboarding system that detects first login, launches a multi-step setup
+            a modular onboarding system that detects first login, launches a multi-step setup
             wizard, saves progressive configuration, dynamically installs modules, configures
             company data, and creates default business workflows.
             """,
@@ -24,7 +24,6 @@
         'data/business_type_data.xml',
         'views/business_type_views.xml',
         'views/business_type_menu.xml',
-        'data/learning_content.xml',
     ],
     'assets': {
        'web.assets_backend': [

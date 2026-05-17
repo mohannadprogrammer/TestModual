@@ -2,7 +2,7 @@
 
 import { registry } from "@web/core/registry";
 import { reactive } from "@odoo/owl";
-
+import { session } from "@web/session";
 /**
  * Context Learning Service
  * Detects the current Odoo context dynamically
@@ -14,6 +14,7 @@ export const learningContext = reactive({
     currentActionId: null,
     currentMenuId: null,
     currentResId: null,
+    userDepartment: null,
 });
 
 export const contextualLearningService = {
@@ -21,6 +22,18 @@ export const contextualLearningService = {
 
     async start(env, services) {
         const { action, orm } = services;
+        const userId = session.storeData
+            ?.Store
+            ?.settings
+            ?.user_id
+            ?.id;
+        const employee = await orm.read(
+            "res.users",
+            [userId],
+            ["department_id"]
+        );
+        console.log(employee, "USER INFO IN CONTEXTUAL LEARNING SERVICE");
+        learningContext.userDepartment = employee[0]?.department_id?.[0] || null;
         const convertYoutubeUrl = (url) => {
 
             if (!url) {
@@ -73,14 +86,20 @@ export const contextualLearningService = {
                 learningContext.currentMenuId =
                     null;
 
-                console.log("Learning Context Updated:", learningContext.currentModel);
+                learningContext.userDepartment =
+                    employee[0]?.department_id[0] ||
+                    null;
+
+                console.log("Learning Context Updated:", learningContext);
                 //update the popup service with new content based on the context
                 const popup = env.services.learning_popup;
 
                 const content = await orm.searchRead(
                     "learning.content",
-                    [["model.model", "=", learningContext.currentModel]],
-                    ["model_name", "model", "view_type", "display_name", "description", "url"]
+                    [["model.model", "=", learningContext.currentModel],
+                    ["department_ids", "in", [learningContext.userDepartment]],
+                    ],
+                    ["model_name", "model", "view_type", "display_name", "description", "url", "department_ids"]
                 ).then((contents) => {
                     console.log("###########", contents);
                     if (contents.length > 0) {

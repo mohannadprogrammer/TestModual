@@ -44,8 +44,8 @@
                             <page string="Description">
                                 <field name="description"/>
                             </page>
-                            <page string="Related Modules">
-                                <field name="module_ids" nolabel="1"/>
+                            <page string="Related Departments">
+                                <field name="department_ids" nolabel="1"/>
                             </page>
                            
                         </notebook>
@@ -62,7 +62,7 @@
                 <search string="Learning Content">
                     <field name="name" string="Title"/>
                     <field name="description"/>
-                    <field name="module_ids"/>
+                    
                     <separator/>
                     <separator/>
                     <group expand="0" string="Group By">

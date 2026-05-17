@@ -14,14 +14,14 @@ class LearningContent(models.Model):
     url = fields.Char(string='URL')
     model = fields.Many2one('ir.model', string='Related Model')
     model_name =fields.Char(string='Related Model Name', compute='_compute_model_name')
-    module_ids = fields.Many2many('ir.module.module', string='Related Modules')
     view_type = fields.Selection([
         ('form', 'Form View'),
         ('kanban', 'Kanban View'),
         ('list', 'List View'), 
     ], string='Recommended View Type')
 
-    
+    #department and sequence fields to control content visibility and order 
+    department_ids = fields.Many2many('hr.department', string='Target Departments')
     sequence = fields.Integer(string='Sequence', default=10)
 
     @api.depends('model')

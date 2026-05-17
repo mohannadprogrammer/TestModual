@@ -15,7 +15,7 @@
             tutorials, short videos, tips, and onboarding content dynamically according to the
             user's current context.
             """,
-    'depends': ['base','web','sale'],
+    'depends': ['base','web','sale', 'hr'],
     'data': [
         'security/ir.model.access.csv',
         'views/learning_content_views.xml',

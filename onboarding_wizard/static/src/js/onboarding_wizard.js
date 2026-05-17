@@ -43,6 +43,8 @@ export class OnboardingWizard extends Component {
         try {
             const completion = await this.orm.call("res.config.settings", "get_values", [[]]);
             this.state.showWizard = completion.onboarding_wizard_completed === false && completion.onboarding_wizard_skipped === false;
+            this.state.current_step = completion.onboarding_wizard_current_step || 0;
+
             console.log("Initial completion score:", completion);
             this.state.completion_score = completion || 0;
             const countries = await this.orm.call("res.country", "search_read", [[], ["name"]]);
@@ -68,10 +70,26 @@ export class OnboardingWizard extends Component {
     /**
      * Move to the next step
      */
-    nextStep() {
+    async nextStep() {
         if (this.state.current_step < 5) {
             this.state.current_step++;
+            const settingsId = await this.orm.create(
+                "res.config.settings",
+                [
+                    {
+                        onboarding_wizard_current_step: this.state.current_step,
+                    }
+                ]
+            );
+            console.log("Settings updated to skip wizard:", settingsId);
+            await this.orm.call(
+                "res.config.settings",
+                "set_values",
+                [settingsId]
+            );
         }
+        //save current step in database
+
     }
 
     /**

@@ -27,6 +27,15 @@
                                 </div>
                             </div>
                         </setting>
+                        <setting>
+                            <field name="onboarding_wizard_current_step"/>
+                            <div class="content-group">
+                                <div class="mt16">
+                                    <label for="onboarding_wizard_current_step" string="Current Step ID"/>
+                                    <p class="text-muted">Set the current step of the onboarding wizard (for testing purposes)</p>
+                                </div>
+                            </div>
+                        </setting>
                     </block>
                 </xpath>
             </field>

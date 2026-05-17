@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Learning Tutorial List View -->
+        <record id="learning_tutorial_list_view" model="ir.ui.view">
+            <field name="name">Learning Tutorial List</field>
+            <field name="model">learning.tutorial</field>
+            <field name="arch" type="xml">
+                <list string="Tutorials">
+                    <field name="name"/>
+                    <field name="model_id"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Learning Tutorial Form View -->
+        <record id="learning_tutorial_form_view" model="ir.ui.view">
+            <field name="name">Learning Tutorial Form</field>
+            <field name="model">learning.tutorial</field>
+            <field name="arch" type="xml">
+                <form string="Tutorial">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                            </button>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="name" required="True"/>
+                                <field name="model_id"/>
+                            </group>
+                            <group>
+                                <field name="active"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Tutorial Steps">
+                                <field name="step_ids" nolabel="1">
+                                    <list editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="title"/>
+                                        <field name="target_selector"/>
+                                        <field name="position"/>
+                                        <field name="trigger_event"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Learning Tutorial Search View -->
+        <record id="learning_tutorial_search_view" model="ir.ui.view">
+            <field name="name">Learning Tutorial Search</field>
+            <field name="model">learning.tutorial</field>
+            <field name="arch" type="xml">
+                <search string="Tutorials">
+                    <field name="name" string="Tutorial Name"/>
+                    <field name="model_id"/>
+                    <separator/>
+                    <filter name="filter_active" string="Active" domain="[('active', '=', True)]"/>
+                    <filter name="filter_inactive" string="Archived" domain="[('active', '=', False)]"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_model" string="Model" context="{'group_by': 'model_id'}"/>
+                        <filter name="group_by_active" string="Status" context="{'group_by': 'active'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Learning Tutorial Action -->
+        <record id="action_learning_tutorial" model="ir.actions.act_window">
+            <field name="name">Tutorials</field>
+            <field name="res_model">learning.tutorial</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first tutorial
+                </p>
+                <p>
+                    Define tutorials for Odoo features with step-by-step guidance for specific models.
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

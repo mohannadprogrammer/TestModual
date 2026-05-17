@@ -1,13 +1,93 @@
+/** @odoo-module **/
+
 import { registry } from "@web/core/registry";
 import { reactive } from "@odoo/owl";
-console.log("Learning Popup Service Loaded");
-export const popupState = reactive({
-    visible: false,
-    minimized: false,
 
-    content: {
-        title: "",
-        description: "",
-        video_url: "",
-    },
+
+export const popupState = reactive({
+    active: false,
+    currentStepIndex: 0,
+    steps: [],
 });
+
+export const tutorial_service = {
+    start() {
+
+        return {
+
+            state: popupState,
+
+            startTutorial: this.startTutorial,
+            nextStep: this.nextStep,
+            endTutorial: () => {
+                popupState.active = false;
+                popupState.currentStepIndex = 0;
+                popupState.steps = [];
+            },
+        };
+    },
+    startTutorial(steps) {
+        this.state.steps = steps;
+        this.state.active = true;
+        this.state.currentStepIndex = 0;
+
+        this.showStep();
+    }
+    ,
+    showStep() {
+
+        const step =
+            this.state.steps[
+            this.state.currentStepIndex
+            ];
+
+        const element =
+            document.querySelector(
+                step.target_selector
+            );
+
+        if (!element) {
+            return;
+        }
+
+        element.classList.add(
+            "learning-highlight"
+        );
+
+        this.state.currentStep = step;
+    },
+    nextStep() {
+
+        const oldStep =
+            this.state.steps[
+            this.state.currentStepIndex
+            ];
+
+        const oldElement =
+            document.querySelector(
+                oldStep.target_selector
+            );
+
+        oldElement?.classList.remove(
+            "learning-highlight"
+        );
+
+        this.state.currentStepIndex++;
+
+        if (
+            this.state.currentStepIndex >=
+            this.state.steps.length
+        ) {
+            this.endTutorial();
+            return;
+        }
+
+        this.showStep();
+    }
+
+};
+
+registry.category("services").add(
+    "learning_services",
+    tutorial_service
+);

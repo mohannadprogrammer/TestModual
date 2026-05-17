@@ -2,77 +2,49 @@
 
 import { registry } from "@web/core/registry";
 import { reactive } from "@odoo/owl";
-
-
+console.log("Learning Popup Service Loaded");
 export const popupState = reactive({
-    active: false,
-    currentStepIndex: 0,
-    steps: [],
+    visible: false,
+    minimized: false,
+
+    content: {
+        title: "",
+        description: "",
+        video_url: "",
+    },
 });
 
-export const tutorial_service = {
-    startTutorial(steps) {
-        this.state.steps = steps;
-        this.state.active = true;
-        this.state.currentStepIndex = 0;
+export const learningPopupService = {
 
-        this.showStep();
-    }
-    ,
-    showStep() {
+    start() {
 
-        const step =
-            this.state.steps[
-            this.state.currentStepIndex
-            ];
+        return {
 
-        const element =
-            document.querySelector(
-                step.target_selector
-            );
+            state: popupState,
 
-        if (!element) {
-            return;
-        }
+            show(content) {
 
-        element.classList.add(
-            "learning-highlight"
-        );
+                popupState.visible = true;
+                popupState.minimized = false; // Start minimized
+                popupState.content = content;
+            },
 
-        this.state.currentStep = step;
+            hide() {
+                popupState.visible = false;
+            },
+
+            minimize() {
+                popupState.minimized = true;
+            },
+
+            expand() {
+                popupState.minimized = false;
+            },
+        };
     },
-    nextStep() {
-
-        const oldStep =
-            this.state.steps[
-            this.state.currentStepIndex
-            ];
-
-        const oldElement =
-            document.querySelector(
-                oldStep.target_selector
-            );
-
-        oldElement?.classList.remove(
-            "learning-highlight"
-        );
-
-        this.state.currentStepIndex++;
-
-        if (
-            this.state.currentStepIndex >=
-            this.state.steps.length
-        ) {
-            this.endTutorial();
-            return;
-        }
-
-        this.showStep();
-    }
-
 };
 
 registry.category("services").add(
-    "learning_services",
-    tutorial_service
+    "learning_popup",
+    learningPopupService
 );

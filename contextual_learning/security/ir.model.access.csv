@@ -1,7 +1,9 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_learning_content_user,learning.content User,model_learning_content,base.group_user,1,0,0,0
-access_learning_content_manager,learning.content Manager,model_learning_content,base.group_system,1,1,1,1
-access_learning_tutorial_step_user,learning.tutorial.step User,model_learning_tutorial_step,base.group_user,1,0,0,0
-access_learning_tutorial_step_manager,learning.tutorial.step Manager,model_learning_tutorial_step,base.group_system,1,1,1,1
-access_learning_progress_user,learning.progress User,model_learning_progress,base.group_user,1,1,0,0
-access_learning_progress_manager,learning.progress Manager,model_learning_progress,base.group_system,1,1,1,1
+access_learning_content_user,learning.content.User,model_learning_content,base.group_user,1,0,0,0
+access_learning_content_manager,learning.content.Manager,model_learning_content,base.group_system,1,1,1,1
+access_learning_tutorial_user,learning.tutorial.User,model_learning_tutorial,base.group_user,1,0,0,0
+access_learning_tutorial_manager,learning.tutorial.Manager,model_learning_tutorial,base.group_system,1,1,1,1
+access_learning_tutorial_step_user,learning.tutorial.step.User,model_learning_tutorial_step,base.group_user,1,0,0,0
+access_learning_tutorial_step_manager,learning.tutorial.step.Manager,model_learning_tutorial_step,base.group_system,1,1,1,1
+access_learning_progress_user,learning.progress.User,model_learning_progress,base.group_user,1,1,0,0
+access_learning_progress_manager,learning.progress.Manager,model_learning_progress,base.group_system,1,1,1,1

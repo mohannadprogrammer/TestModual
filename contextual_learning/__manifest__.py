@@ -19,7 +19,10 @@
     'data': [
         'security/ir.model.access.csv',
         'views/learning_content_views.xml',
-        'views/learning_content_menu.xml',
+        'views/learning_progress_views.xml',
+        'views/learning_tutorial_views.xml',
+        'views/learning_tutorial_step_views.xml',
+        'views/menus.xml',
         # 'data/learning_content.xml',
     ],
     'assets':{

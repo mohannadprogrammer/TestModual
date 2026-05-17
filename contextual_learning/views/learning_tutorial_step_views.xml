@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Learning Tutorial Step List View -->
+        <record id="learning_tutorial_step_list_view" model="ir.ui.view">
+            <field name="name">Learning Tutorial Step List</field>
+            <field name="model">learning.tutorial.step</field>
+            <field name="arch" type="xml">
+                <list string="Tutorial Steps">
+                    <field name="sequence" widget="handle"/>
+                    <field name="title"/>
+                    <field name="tutorial_id"/>
+                    <field name="target_selector"/>
+                    <field name="position"/>
+                    <field name="trigger_event"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Learning Tutorial Step Form View -->
+        <record id="learning_tutorial_step_form_view" model="ir.ui.view">
+            <field name="name">Learning Tutorial Step Form</field>
+            <field name="model">learning.tutorial.step</field>
+            <field name="arch" type="xml">
+                <form string="Tutorial Step">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="title" required="True"/>
+                                <field name="tutorial_id"/>
+                                <field name="sequence"/>
+                            </group>
+                            <group>
+                                <field name="position"/>
+                                <field name="trigger_event"/>
+                            </group>
+                        </group>
+
+                        <group>
+                            <group>
+                                <field name="target_selector" help="CSS selector to identify the UI element"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Content">
+                                <field name="content" nolabel="1" placeholder="Enter tutorial step content..."/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Learning Tutorial Step Search View -->
+        <record id="learning_tutorial_step_search_view" model="ir.ui.view">
+            <field name="name">Learning Tutorial Step Search</field>
+            <field name="model">learning.tutorial.step</field>
+            <field name="arch" type="xml">
+                <search string="Tutorial Steps">
+                    <field name="title"/>
+                    <field name="tutorial_id"/>
+                    <field name="target_selector"/>
+                    <separator/>
+                    <filter name="filter_position_top" string="Top" domain="[('position', '=', 'top')]"/>
+                    <filter name="filter_position_bottom" string="Bottom" domain="[('position', '=', 'bottom')]"/>
+                    <filter name="filter_position_left" string="Left" domain="[('position', '=', 'left')]"/>
+                    <filter name="filter_position_right" string="Right" domain="[('position', '=', 'right')]"/>
+                    <separator/>
+                    <filter name="filter_trigger_click" string="Click Event" domain="[('trigger_event', '=', 'click')]"/>
+                    <filter name="filter_trigger_hover" string="Hover Event" domain="[('trigger_event', '=', 'hover')]"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_tutorial" string="Tutorial" context="{'group_by': 'tutorial_id'}"/>
+                        <filter name="group_by_position" string="Position" context="{'group_by': 'position'}"/>
+                        <filter name="group_by_trigger" string="Trigger Event" context="{'group_by': 'trigger_event'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Learning Tutorial Step Action -->
+        <record id="action_learning_tutorial_step" model="ir.actions.act_window">
+            <field name="name">Tutorial Steps</field>
+            <field name="res_model">learning.tutorial.step</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first tutorial step
+                </p>
+                <p>
+                    Define step-by-step tutorials to guide users through Odoo features.
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

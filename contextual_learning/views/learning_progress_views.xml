@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Learning Progress List View -->
+        <record id="learning_progress_list_view" model="ir.ui.view">
+            <field name="name">Learning Progress List</field>
+            <field name="model">learning.progress</field>
+            <field name="arch" type="xml">
+                <list string="Learning Progress">
+                    <field name="user_id"/>
+                    <field name="content_id"/>
+                    <field name="percentage_completed" widget="progressbar"/>
+                    <field name="completed" widget="boolean_toggle"/>
+                    <field name="skipped" widget="boolean_toggle"/>
+                    <field name="completion_date"/>
+                    <field name="timestamp"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Learning Progress Form View -->
+        <record id="learning_progress_form_view" model="ir.ui.view">
+            <field name="name">Learning Progress Form</field>
+            <field name="model">learning.progress</field>
+            <field name="arch" type="xml">
+                <form string="Learning Progress">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="user_id" required="True"/>
+                                <field name="content_id" required="True"/>
+                                <field name="completion_date"/>
+                            </group>
+                            <group>
+                                <field name="completed"/>
+                                <field name="skipped"/>
+                                <field name="percentage_completed" widget="progressbar"/>
+                                <field name="timestamp"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Feedback">
+                                <field name="feedback" nolabel="1" placeholder="Enter user feedback..."/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Learning Progress Search View -->
+        <record id="learning_progress_search_view" model="ir.ui.view">
+            <field name="name">Learning Progress Search</field>
+            <field name="model">learning.progress</field>
+            <field name="arch" type="xml">
+                <search string="Learning Progress">
+                    <field name="user_id"/>
+                    <field name="content_id"/>
+                    <separator/>
+                    <filter name="filter_completed" string="Completed" domain="[('completed', '=', True)]"/>
+                    <filter name="filter_skipped" string="Skipped" domain="[('skipped', '=', True)]"/>
+                    <filter name="filter_pending" string="In Progress" domain="[('completed', '=', False), ('skipped', '=', False)]"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_user" string="User" context="{'group_by': 'user_id'}"/>
+                        <filter name="group_by_content" string="Content" context="{'group_by': 'content_id'}"/>
+                        <filter name="group_by_completed" string="Status" context="{'group_by': 'completed'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Learning Progress Action -->
+        <record id="action_learning_progress" model="ir.actions.act_window">
+            <field name="name">Learning Progress</field>
+            <field name="res_model">learning.progress</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No learning progress records yet
+                </p>
+                <p>
+                    Track user learning progress and completion status.
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

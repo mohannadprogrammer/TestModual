@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Main Menu -->
+        <menuitem id="menu_contextual_learning" name="Contextual Learning" parent="" sequence="100"/>
+
+        <!-- Learning Content Menu -->
+        <menuitem id="menu_learning_content" name="Learning Materials" parent="menu_contextual_learning" 
+                  action="action_learning_content" sequence="1"/>
+
+        <!-- Learning Progress Menu -->
+        <menuitem id="menu_learning_progress" name="Learning Progress" parent="menu_contextual_learning" 
+                  action="action_learning_progress" sequence="2"/>
+
+        <!-- Tutorial Management Submenu -->
+        <menuitem id="menu_tutorial_management" name="Tutorials" parent="menu_contextual_learning" sequence="3"/>
+
+        <!-- Tutorials Menu -->
+        <menuitem id="menu_learning_tutorial" name="Manage Tutorials" parent="menu_tutorial_management" 
+                  action="action_learning_tutorial" sequence="0"/>
+
+        <!-- Tutorial Steps Menu -->
+        <menuitem id="menu_learning_tutorial_step" name="Tutorial Steps" parent="menu_tutorial_management" 
+                  action="action_learning_tutorial_step" sequence="1"/>
+    </data>
+</odoo>

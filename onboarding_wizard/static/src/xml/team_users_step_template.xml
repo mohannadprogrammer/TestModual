@@ -4,111 +4,245 @@
     <!-- Step 4: Team & Users -->
     <t t-name="onboarding_wizard.TeamUsersStep">
         <div class="wizard_step team_users_step">
-            
-            
+            <h2>Team &amp; Management Setup</h2>
 
-            <div class="team_section">
-            <h2>Team &amp; Users</h2>
-                <div class="add_employee_form">
-                    <h3>Add Team Member</h3>
+            <!-- Tab Navigation -->
+            <div class="tabs_container">
+                <button 
+                    class="tab_button"
+                    t-att-class="{'departments-active': state.activeTab === 'departments'}"
+                    t-on-click="() => this.state.activeTab = 'departments'"
+                >
+                    📋 Departments
+                </button>
+                <button 
+                    class="tab_button"
+                    t-att-class="{'employees-active': state.activeTab === 'employees'}"
+                    t-on-click="() => this.state.activeTab = 'employees'"
+                >
+                    👥 Employees
+                </button>
+                <button 
+                    class="tab_button"
+                    t-att-class="{'users-active': state.activeTab === 'users'}"
+                    t-on-click="() => this.state.activeTab = 'users'"
+                >
+                    🔑 Users
+                </button>
+            </div>
 
-                    <div class="form_row">
-                        <div class="form_group flex-1">
-                            <label>Name *</label>
-                            <input
-                                type="text"
-                                class="form_control"
-                                placeholder="Employee name"
-                                t-model="state.newEmployee.name"
-                            />
-                        </div>
-                        <div class="form_group flex-1">
-                            <label>Email *</label>
-                            <input
-                                type="email"
-                                class="form_control"
-                                placeholder="email@company.com"
-                                t-model="state.newEmployee.email"
-                            />
-                        </div>
-                    </div>
-
-                    <div class="form_row">
-                        <div class="form_group flex-1">
-                            <label>Job Title</label>
-                            <input
-                                type="text"
-                                class="form_control"
-                                placeholder="e.g., Manager"
-                                t-model="state.newEmployee.job_title"
-                            />
-                        </div>
-                        <div class="form_group flex-1">
-                            <label>Department</label>
-                            <select class="form_control" t-model="state.newEmployee.department_id">
-                                <option value="">Select Department</option>
-                                <t t-foreach="state.departments" t-as="dept" t-key="dept.id">
-                                    <option t-esc="dept.name" t-att-value="dept.id" />
-                                </t>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form_group">
-                        <label>Roles</label>
-                        <select
-                            class="form_control"
-                            multiple="multiple"
-                            t-model="state.newEmployee.role_ids"
-                        >
-                            <t t-foreach="state.roles" t-as="role" t-key="role.id">
-                                <option t-esc="role.name" t-att-value="role.id" />
-                            </t>
-                        </select>
-                    </div>
-
-                    <button class="btn btn-primary mt-3" t-on-click="() => this.addEmployee()">
-                        + Add Employee
-                    </button>
-                </div>
-                <h3 style="
-    padding: 10px 0;
-">Added Employees (<t t-esc="state.employees.length" />)</h3>
-                <div class="employees_list">
-                    
-
-                    <t t-if="state.employees.length === 0">
-                        <p class="empty_state">No employees added yet</p>
-                    </t>
-                    
-                    <t t-foreach="state.employees" t-as="emp" t-key="emp.id">
-                        <div class="employee_card" >
-                            <div class="employee_info">
-                                <h4 t-esc="emp.name" />
-                                <p t-esc="emp.email" />
-                                <small t-if="emp.job_title" t-esc="emp.job_title" />
+            <!-- Departments Section -->
+            <div class="section_container" t-if="state.activeTab === 'departments'">
+                <div class="form_section">
+                    <h3>Departments</h3>
+                    <div class="add_department_form">
+                        <div class="form_row">
+                            <div class="form_group flex-1">
+                                <label>Department Name *</label>
+                                <input
+                                    type="text"
+                                    class="form_control"
+                                    placeholder="Enter department name"
+                                    t-model="state.newDepartment.name"
+                                />
                             </div>
-                            <button
-                                class="btn btn-sm btn-danger"
-                                t-on-click="() => this.removeEmployee(emp.id)"
-                            >
-                                Remove
-                            </button>
                         </div>
-                    </t>
-                    
+
+                        <button class="btn btn-secondary mt-3" t-on-click="() => this.addDepartment()">
+                            + Add Department
+                        </button>
+                        <button class="btn btn-secondary mt-3" t-on-click="() => this.openDepartmentForm()">
+                            + Create Department (Full Form)
+                        </button>
+                    </div>
+
+                    <h4 style="padding: 10px 0;">Departments List (<t t-esc="state.departments.length" />)</h4>
+                    <div class="items_list">
+                        <t t-if="state.departments.length === 0">
+                            <p class="empty_state">No departments added yet</p>
+                        </t>
+                        
+                        <t t-foreach="state.departments" t-as="dept" t-key="dept.id">
+                            <div class="item_card">
+                                <div class="item_info">
+                                    <h5 t-esc="dept.name" />
+                                </div>
+                                <button
+                                    class="btn btn-sm btn-danger"
+                                    t-on-click="() => this.removeDepartment(dept.id)"
+                                >
+                                    Remove
+                                </button>
+                            </div>
+                        </t>
+                    </div>
                 </div>
-                <div class="form_actions">
+            </div>
+
+            <!-- Team &amp; Users Section -->
+            <div class="section_container" t-if="state.activeTab === 'employees'">
+                <div class="form_section">
+                    <h3>Team Members (Employees)</h3>
+                    <div class="add_employee_form">
+                        <h4>Add Team Member</h4>
+
+                        <div class="form_row">
+                            <div class="form_group flex-1">
+                                <label>Name *</label>
+                                <input
+                                    type="text"
+                                    class="form_control"
+                                    placeholder="Employee name"
+                                    t-model="state.newEmployee.name"
+                                />
+                            </div>
+                            <div class="form_group flex-1">
+                                <label>Email *</label>
+                                <input
+                                    type="email"
+                                    class="form_control"
+                                    placeholder="email@company.com"
+                                    t-model="state.newEmployee.email"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="form_row">
+                            <div class="form_group flex-1">
+                                <label>Job Title</label>
+                                <input
+                                    type="text"
+                                    class="form_control"
+                                    placeholder="e.g., Manager"
+                                    t-model="state.newEmployee.job_title"
+                                />
+                            </div>
+                            <div class="form_group flex-1">
+                                <label>Department</label>
+                                <select class="form_control" t-model="state.newEmployee.department_id">
+                                    <option value="">Select Department</option>
+                                    <t t-foreach="state.departments" t-as="dept" t-key="dept.id">
+                                        <option t-esc="dept.name" t-att-value="dept.id" />
+                                    </t>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary mt-3" t-on-click="() => this.addEmployee()">
+                            + Add Employee
+                        </button>
+                        <button class="btn btn-primary mt-3" t-on-click="() => this.openEmployeeForm()">
+                            + Add Employee (Full Form)
+                        </button>
+                    </div>
+
+                    <h4 style="padding: 10px 0;">Added Employees (<t t-esc="state.employees.length" />)</h4>
+                    <div class="employees_list">
+                        <t t-if="state.employees.length === 0">
+                            <p class="empty_state">No employees added yet</p>
+                        </t>
+                        
+                        <t t-foreach="state.employees" t-as="emp" t-key="emp.id">
+                            <div class="employee_card">
+                                <div class="employee_info">
+                                    <h5 t-esc="emp.name" />
+                                    <p t-esc="emp.email" />
+                                    <small t-if="emp.job_title" t-esc="emp.job_title" />
+                                </div>
+                                <button
+                                    class="btn btn-sm btn-danger"
+                                    t-on-click="() => this.removeEmployee(emp.id)"
+                                >
+                                    Remove
+                                </button>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Section -->
+            <div class="section_container" t-if="state.activeTab === 'users'">
+                <div class="form_section">
+                    <h3>System Users</h3>
+                    <div class="add_user_form">
+                        <h4>Add System User</h4>
+
+                        <div class="form_row">
+                            <div class="form_group flex-1">
+                                <label>Login *</label>
+                                <input
+                                    type="text"
+                                    class="form_control"
+                                    placeholder="Username"
+                                    t-model="state.newUser.login"
+                                />
+                            </div>
+                            <div class="form_group flex-1">
+                                <label>Name *</label>
+                                <input
+                                    type="text"
+                                    class="form_control"
+                                    placeholder="Full name"
+                                    t-model="state.newUser.name"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="form_row">
+                            <div class="form_group flex-1">
+                                <label>Email *</label>
+                                <input
+                                    type="email"
+                                    class="form_control"
+                                    placeholder="user@company.com"
+                                    t-model="state.newUser.email"
+                                />
+                            </div>
+                        </div>
+
+                        <button class="btn btn-success mt-3" t-on-click="() => this.addUser()">
+                            + Add User
+                        </button>
+                        <button class="btn btn-success mt-3" t-on-click="() => this.openUserForm()">
+                            + Create User (Full Form)
+                        </button>
+                    </div>
+
+                    <h4 style="padding: 10px 0;">System Users (<t t-esc="state.users.length" />)</h4>
+                    <div class="users_list">
+                        <t t-if="state.users.length === 0">
+                            <p class="empty_state">No users added yet</p>
+                        </t>
+                        
+                        <t t-foreach="state.users" t-as="user" t-key="user.id">
+                            <div class="user_card">
+                                <div class="user_info">
+                                    <h5 t-esc="user.name" />
+                                    <p><strong>Login:</strong> <t t-esc="user.login" /></p>
+                                    <p t-esc="user.email" />
+                                </div>
+                                <button
+                                    class="btn btn-sm btn-danger"
+                                    t-on-click="() => this.removeUser(user.id)"
+                                >
+                                    Remove
+                                </button>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="form_actions">
                 <button class="btn btn-outline-secondary" t-on-click="props.onPrevious">
                     ← Previous
                 </button>
-                <button class="btn btn-primary" t-on-click="props.onNext">
+                <button class="btn btn-primary" t-on-click="() => this.saveAllNewData()">
                     Next →
                 </button>
             </div>
-            </div>
-
-            
         </div>
     </t>
 

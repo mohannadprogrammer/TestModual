@@ -17,7 +17,8 @@
         'web',
         'base',
         'hr',
-        'account',
+        'accountant',
+        'l10n_sa_edi'
     ],
     'data': [
         'security/ir.model.access.csv',
@@ -47,6 +48,7 @@
             ('replace', 'web_enterprise/static/src/main.js', 'onboarding_wizard/static/src/js/main.js'),
         ],
     },
+    "installable": True,
     'auto_install': True,
     'license': 'LGPL-3',
 }

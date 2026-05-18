@@ -37,10 +37,10 @@ export class OnboardingWizard extends Component {
     }
     async loadInitialData() {
         try {
-            const completion = await this.orm.call("res.config.settings", "get_values", [[]]);
+            const completion = await this.orm.call("res.config.settings", "get_values", []);
             this.state.showWizard = completion.onboarding_wizard_completed === false && completion.onboarding_wizard_skipped === false;
-            this.state.current_step = completion.onboarding_wizard_current_step || 0;
-
+            this.state.current_step = parseInt(completion.onboarding_wizard_current_step) || 0;
+            console.log("Initial data loaded:", completion);
 
             this.state.completion_score = completion || 0;
 

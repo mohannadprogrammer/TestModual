@@ -33,7 +33,7 @@ export class AccountingConfigStep extends Component {
 
     async loadInitialData() {
         try {
-            const currencies = await this.orm.call("res.currency", "search_read", [[], ["name", "code"]]);
+            const currencies = await this.orm.call("res.currency", "search_read", [[], ["name", "symbol"]]);
             const countries = await this.orm.call("res.country", "search_read", [[], ["name", "code"]]);
             this.state.currencies = currencies;
             this.state.countries = countries;

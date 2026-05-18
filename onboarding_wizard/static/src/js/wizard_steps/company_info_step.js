@@ -1,4 +1,4 @@
-import { Component, useState, useRef } from "@odoo/owl";
+import { Component, useState, useRef, onWillStart } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 import { rpc } from "@web/core/network/rpc";
 export class CompanyInfoStep extends Component {
@@ -29,7 +29,9 @@ export class CompanyInfoStep extends Component {
         console.log("CompanyInfoStep state", this.props);
 
         console.log("state", this.state);
-        this.loadInitialData();
+        onWillStart(async () => {
+            await this.loadInitialData();
+        });
     }
 
     async loadInitialData() {
@@ -38,11 +40,11 @@ export class CompanyInfoStep extends Component {
             const countries = await this.orm.call("res.country", "search_read", [[], ["name"]]);
             const currencies = await this.orm.call("res.currency", "search_read", [[], ["name"]]);
             // company info from database if exists
-            const companyInfo = await this.orm.call("res.company", "search_read", [[], []]);
+            const companyInfo = await this.orm.call("res.company", "search_read", [[], ["name", "street", "street2", "city", "country_id", "currency_id", "vat", "logo"]]);
             this.state.countries = countries;
             this.state.currencies = currencies;
             this.state.companyInfo = companyInfo[0] || {};
-            this.state.loadInitialData = companyInfo[0]?.logo || null;
+            this.state.companyInfo.logo = 'data:image/png;base64,' + this.state.companyInfo.logo;
             this.state.currency_id = companyInfo[0]?.currency_id || "";
 
             // // Load accounting configuration if exists
@@ -59,10 +61,10 @@ export class CompanyInfoStep extends Component {
         }
     }
 
-    handleInputChange(field, value) {
-        if (this.props.updateFormData) {
-            this.props.updateFormData({ [field]: value });
-        }
+    handleInputChange = (field, value) => {
+
+        this.state.companyInfo[field] = value;
+        console.log("Updated companyInfo:", this.state.companyInfo);
     }
 
     handleFileChange(event) {
@@ -70,7 +72,8 @@ export class CompanyInfoStep extends Component {
         if (file) {
             const reader = new FileReader();
             reader.onload = (e) => {
-                this.state.logoPreview = e.target.result;
+                console.log("File loaded:", e.target);
+                this.state.companyInfo.logo = e.target.result;
             };
             reader.readAsDataURL(file);
         }
@@ -82,22 +85,27 @@ export class CompanyInfoStep extends Component {
     async saveCompanyInfo() {
         try {
             const companyData = {
-                name: this.props.companyInfo.name,
-                street: this.props.companyInfo.street,
-                street2: this.props.companyInfo.street2,
-                city: this.props.companyInfo.city,
-                country_id: this.props.companyInfo.country_id,
-                currency_id: this.props.companyInfo.currency_id,
-                vat: this.props.companyInfo.vat,
+                name: this.state.companyInfo.name,
+                street: this.state.companyInfo.street,
+                street2: this.state.companyInfo.street2,
+                city: this.state.companyInfo.city,
+                country_id: parseInt(this.state.companyInfo.country_id) || null,
+                currency_id: parseInt(this.state.companyInfo.currency_id) || null,
+                vat: this.state.companyInfo.vat,
+                logo: this.state.companyInfo.logo
+                    ?.split(",")[1] || null, // Remove the data URL prefix
+
             };
 
-            // Save to res.company
-            const companyId = await this.orm.create("res.company", [companyData]);
-            console.log("Company created with ID:", companyId);
+            // update to res.company
+            const companyId = await this.orm.write("res.company", [this.state.companyInfo.id], companyData);
+            console.log("Company updated with ID:", companyId);
+            this.props.onNext();
             return companyId;
         } catch (error) {
             console.error("Error saving company info:", error);
             throw error;
         }
+
     }
 }

@@ -18,6 +18,7 @@
                             class="form_control"
                             t-model="state.companyInfo.name"
                             placeholder="Enter company name"
+                            t-on-input="(e) => this.handleInputChange('name', e.target.value)"
                         />
                     </div>
 
@@ -28,6 +29,7 @@
                             class="form_control"
                             placeholder="Enter street address"
                             t-model="state.companyInfo.street"
+                            t-on-input="(e) => this.handleInputChange('street', e.target.value)"
                         />
                     </div>
 
@@ -38,6 +40,7 @@
                             class="form_control"
                             placeholder="Enter street 2 (optional)"
                             t-model="state.companyInfo.street2"
+                            t-on-input="(e) => this.handleInputChange('street2', e.target.value)"
                         />
                     </div>
 
@@ -48,6 +51,7 @@
                             class="form_control"
                             placeholder="Enter city"
                             t-model="state.companyInfo.city"
+                            t-on-input="(e) => this.handleInputChange('city', e.target.value)"
                         />
                     </div>
 
@@ -57,6 +61,7 @@
                             <select
                                 class="form_control"
                                 t-model="state.companyInfo.country_id"
+                                t-on-change="(e) => this.handleInputChange('country_id', e.target.value)"
                             >
                                 <option value="">Select Country</option>
                                 <t t-foreach="state.countries" t-as="country" t-key="country.id">
@@ -69,10 +74,11 @@
                             <label>Currency *</label>
                             <select
                                 class="form_control"
-                                 t-model="state.currency_id[0]"
+                                t-model="state.companyInfo.currency_id"
+                                t-on-change="(e) => this.handleInputChange('currency_id', e.target.value)"
                             >
                                 <option value="">Select Currency</option>
-                                <t t-foreach="state.currencies" t-as="currency" t-key="currency.id" t-value="state.companyInfo.currency_id">
+                                <t t-foreach="state.currencies" t-as="currency" t-key="currency.id">
                                     <option t-esc="currency.name" t-att-value="currency.id" />
                                 </t>
                             </select>
@@ -89,6 +95,7 @@
                                 class="form_control"
                                 placeholder="Enter VAT number"
                                 t-model="state.companyInfo.vat"
+                                t-on-input="(e) => this.handleInputChange('vat', e.target.value)"
                             />
                         </div>
                     </div>
@@ -98,12 +105,15 @@
                     <h3>Company Logo</h3>
                     <div class="logo_upload">
                         <div class="logo_placeholder">
-                            <span>📷</span>
-                            <p>No logo uploaded</p>
-                           
-                                <img t-att-src="'data:image/png;base64,' + state.companyInfo.logo"
-                                     alt="Logo Preview" class="logo_preview" />
                             
+                            <t t-if="state.companyInfo.logo">
+                                <img t-att-src="state.companyInfo.logo"
+                                     alt="Logo Preview" class="logo_preview" />
+                            </t>
+                            <t t-elif="state.loadInitialData">
+                                <span>📷</span>
+                                <p>No logo uploaded</p>
+                            </t>
                         </div>
 
                         <input
@@ -130,7 +140,7 @@
                 <button class="btn btn-outline-secondary" t-on-click="props.onPrevious">
                     ← Previous
                 </button>
-                <button class="btn btn-primary" t-on-click="props.onNext">
+                <button class="btn btn-primary" t-on-click="saveCompanyInfo">
                     Next →
                 </button>
             </div>

@@ -11,30 +11,30 @@
             <div class="dashboard_stats_grid">
                 <div class="stat_card">
                     <div class="stat_value">
-                        <t t-esc="Math.round(props.completionScore or 75)" />%
+                        <t t-esc="state.completionScore" />%
                     </div>
                     <p class="stat_label">Setup Completion</p>
                     <div class="stat_progress">
                         <div
                             class="stat_progress_fill"
-                            t-attf-style="width: {{ props.completionScore or 75 }}%"
+                            t-attf-style="width: {{ state.completionScore or 75 }}%"
                         />
                     </div>
                 </div>
 
                 <div class="stat_card">
-                    <div class="stat_value" t-esc="props.installedModules and len(props.installedModules) or 0" />
+                    <div class="stat_value" t-out="state.totalModules" />
                     <p class="stat_label">Modules Installed</p>
                 </div>
 
                 <div class="stat_card">
-                    <div class="stat_value" t-esc="props.totalUsers or 0" />
+                    <div class="stat_value" t-esc="state.totalUsers" />
                     <p class="stat_label">Team Members</p>
                 </div>
 
                 <div class="stat_card">
                     <div class="stat_value">
-                        <t t-if="props.emailStatus === 'configured'">
+                        <t t-if="state.emailStatus === 'configured'">
                             ✓
                         </t>
                         <t t-else="">

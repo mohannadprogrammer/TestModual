@@ -15,27 +15,25 @@
                         <label>Fiscal Localization *</label>
                         <select 
                             class="form_control" 
-                            t-model="state.fiscalLocalization"
-                            t-on-change="(e) => this.handleInputChange('fiscalLocalization', e.target.value)">
+                            t-model="state.currentlocalization">
                             <option value="">Select Fiscal Localization</option>
-                            <option value="sa">Saudi Arabia</option>
-                            <option value="uae">United Arab Emirates</option>
-                            <option value="eg">Egypt</option>
-                            <option value="jo">Jordan</option>
-                            <option value="generic">Generic</option>
+                            <t t-foreach="state.countries" t-as="loc" t-key="loc.id">
+                                <option t-attf-value="{{loc.id}}" t-esc="loc.name" />
+                            </t>
                         </select>
                     </div>
                     <div class="form_group flex-1">
                         <label>Chart of Accounts *</label>
-                        <select 
-                            class="form_control" 
-                            t-model="state.chartOfAccounts"
-                            t-on-change="(e) => this.handleInputChange('chartOfAccounts', e.target.value)">
-                            <option value="">Select Chart of Accounts</option>
-                            <option value="simple">Simple Chart</option>
-                            <option value="professional">Professional Chart</option>
-                            <option value="fullscale">Full Scale Chart</option>
-                        </select>
+                        <button 
+                            class="btn btn-link p-0"
+                            t-on-click="openChartOfAccounts"
+                        >
+                            Open Chart of Accounts
+                            <t t-if="state.chartOfAccounts">
+                                <i class="fa fa-check text-success"></i>
+                            
+                            </t>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -46,38 +44,27 @@
                 
                 <div class="form_row">
                     <div class="form_group flex-1">
-                        <label>
-                            <input 
-                                type="checkbox" 
-                                t-model="state.zatcaEnabled"
-                                t-on-change="() => this.toggleZATCA()" />
-                            Enable ZATCA Integration
-                        </label>
+                        <!-- //select to enable/disable ZATCA configuration of the option (
+                            	
+                                sandbox	Sandbox	
+                                preprod	Simulation (Pre-Production)	
+                                prod	Production
+                        ) -->
+                        <label> ZATCA Integration mode</label>
+                        <select 
+                            class="form_control"
+                            t-model="state.zatcaApi"
+                            t-on-change="(e) => this.handleInputChange('zatcaApi', e.target.value === 'true')"
+                            >
+                            
+                            <option value="sandbox">Sandbox</option>
+                            <option value="preprod">	Simulation (Pre-Production)	</option>
+                            <option value="true">Production</option>
+                        </select>
                     </div>
                 </div>
 
-                <t t-if="state.zatcaEnabled">
-                    <div class="form_row zatca_fields">
-                        <div class="form_group flex-1">
-                            <label>ZATCA API URL *</label>
-                            <input
-                                type="url"
-                                class="form_control"
-                                placeholder="https://api.zatca.gov.sa/..."
-                                t-model="state.zatcaApiUrl"
-                                t-on-change="(e) => this.handleInputChange('zatca_api_url', e.target.value)" />
-                        </div>
-                        <div class="form_group flex-1">
-                            <label>ZATCA API Key *</label>
-                            <input
-                                type="password"
-                                class="form_control"
-                                placeholder="Enter your API key"
-                                t-model="state.zatcaApiKey"
-                                t-on-change="(e) => this.handleInputChange('zatca_api_key', e.target.value)" />
-                        </div>
-                    </div>
-                </t>
+               
             </div>
 
             <!-- Payment Methods -->
@@ -85,31 +72,11 @@
                 <h3>Payment Methods</h3>
 
                 <div class="add_payment_method_form">
-                    <div class="form_row">
-                        <div class="form_group flex-1">
-                            <label>Payment Method Name</label>
-                            <input
-                                type="text"
-                                class="form_control"
-                                placeholder="e.g., Cash, Check, Transfer"
-                                t-model="state.newPaymentMethod.name" />
-                        </div>
-                        <div class="form_group flex-1">
-                            <label>Code</label>
-                            <input
-                                type="text"
-                                class="form_control"
-                                placeholder="e.g., CASH, CHK, BANK"
-                                t-model="state.newPaymentMethod.code" />
-                        </div>
-                        <div class="form_group" style="align-self: flex-end;">
-                            <button 
-                                class="btn btn-primary"
-                                t-on-click="() => this.addPaymentMethod()">
-                                Add Method
-                            </button>
-                        </div>
-                    </div>
+                    <button 
+                        class="btn btn-primary w-100"
+                        t-on-click="() => this.addPaymentMethodInAction()">
+                        <i class="fa fa-plus"></i> Add Payment Method
+                    </button>
                 </div>
 
                 <t t-if="state.paymentMethods.length > 0">
@@ -143,52 +110,15 @@
                 <h3>Bank Accounts</h3>
 
                 <div class="add_bank_account_form">
-                    <div class="form_row">
-                        <div class="form_group flex-1">
-                            <label>Account Name</label>
-                            <input
-                                type="text"
-                                class="form_control"
-                                placeholder="e.g., Main Business Account"
-                                t-model="state.newBankAccount.name" />
-                        </div>
-                        <div class="form_group flex-1">
-                            <label>Account Number</label>
-                            <input
-                                type="text"
-                                class="form_control"
-                                placeholder="Account number"
-                                t-model="state.newBankAccount.account_number" />
-                        </div>
-                    </div>
+                    
 
                     <div class="form_row">
-                        <div class="form_group flex-1">
-                            <label>Bank Name</label>
-                            <input
-                                type="text"
-                                class="form_control"
-                                placeholder="e.g., Saudi National Bank"
-                                t-model="state.newBankAccount.bank_name" />
-                        </div>
-                        <div class="form_group flex-1">
-                            <label>Currency</label>
-                            <select 
-                                class="form_control"
-                                t-model="state.newBankAccount.currency_id">
-                                <option value="">Select Currency</option>
-                                <t t-foreach="state.currencies" t-as="currency" t-key="currency.id">
-                                    <option t-attf-value="{{currency.id}}">
-                                        <t t-esc="currency.name" /> (<t t-esc="currency.code" />)
-                                    </option>
-                                </t>
-                            </select>
-                        </div>
+                        
                         <div class="form_group" style="align-self: flex-end;">
                             <button 
-                                class="btn btn-primary"
-                                t-on-click="() => this.addBankAccount()">
-                                Add Account
+                                class="btn btn-primary w-100"
+                                t-on-click="() => this.addBankAccountinAction()">
+                                <i class="fa fa-plus"></i> Add Account (Full form)
                             </button>
                         </div>
                     </div>
@@ -231,6 +161,19 @@
                 <div class="alert alert-info">
                     <strong>Note:</strong> Default taxes for <t t-esc="state.fiscalLocalization || 'selected region'" /> will be automatically created.
                 </div>
+            </div>
+            <div class="form_actions">
+                <button class="btn btn-outline-secondary" t-on-click="props.onPrevious">
+                    ← Previous
+                </button>
+                <button
+                    class="btn btn-primary"
+                    t-on-click="() => {
+                    props.onNext();
+                    }"
+                >
+                    Next →
+                </button>
             </div>
         </div>
     </t>

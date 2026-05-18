@@ -15,45 +15,71 @@ export class AccountingConfigStep extends Component {
 
     setup() {
         this.orm = useService("orm");
+        this.action = useService("action");
         this.state = useState({
             fiscalLocalization: this.props.accountingConfig?.fiscal_localization || "",
-            chartOfAccounts: this.props.accountingConfig?.chart_of_accounts || "",
-            zatcaEnabled: this.props.accountingConfig?.zatca_enabled || false,
-            zatcaApiUrl: this.props.accountingConfig?.zatca_api_url || "",
-            zatcaApiKey: this.props.accountingConfig?.zatca_api_key || "",
+            chartOfAccounts: false,
+            zatcaApi: "",
             paymentMethods: this.props.accountingConfig?.payment_methods || [],
             bankAccounts: this.props.accountingConfig?.bank_accounts || [],
             newPaymentMethod: { name: "", code: "" },
             newBankAccount: { name: "", account_number: "", bank_name: "", currency_id: "" },
             currencies: [],
             countries: [],
+            currentlocalization: null,
         });
         this.loadInitialData();
     }
-
+    async openChartOfAccounts() {
+        try {
+            await this.action.doAction({
+                type: "ir.actions.act_window",
+                res_model: "account.account",
+                views: [[false, "list"]],
+                target: "new",
+            });
+            this.state.chartOfAccounts = true;
+        } catch (error) {
+            console.error("Error opening Chart of Accounts:", error);
+        }
+    }
     async loadInitialData() {
         try {
             const currencies = await this.orm.call("res.currency", "search_read", [[], ["name", "symbol"]]);
             const countries = await this.orm.call("res.country", "search_read", [[], ["name", "code"]]);
+            const fiscal = await this.orm.call("res.config.settings", "get_values", []);
             this.state.currencies = currencies;
             this.state.countries = countries;
+            this.state.currentlocalization = fiscal.account_fiscal_country_id || "";
+            console.log(fiscal, "fiscal");
+
+            const bankAccounts = await this.orm.searchRead(
+                "account.account",
+                [["account_type", "=", "asset_cash"]],
+                []
+            );
+            const paymentMethods = await this.orm.searchRead(
+                "payment.method",
+                [],
+                ["name", "code"]
+            );
+
+            this.state.paymentMethods = paymentMethods;
+
+
+            this.state.bankAccounts = bankAccounts;
         } catch (error) {
             console.error("Error loading initial data:", error);
         }
     }
 
     handleInputChange(field, value) {
-        if (field.startsWith("zatca_")) {
-            const zatcaField = field.replace("zatca_", "");
-            this.state[zatcaField] = value;
-        } else {
-            this.state[field] = value;
-        }
+
+        this.state[field] = value;
+
     }
 
-    toggleZATCA() {
-        this.state.zatcaEnabled = !this.state.zatcaEnabled;
-    }
+
 
     addPaymentMethod() {
         if (this.state.newPaymentMethod.name && this.state.newPaymentMethod.code) {
@@ -65,67 +91,96 @@ export class AccountingConfigStep extends Component {
         }
     }
 
-    removePaymentMethod(id) {
+    async removePaymentMethod(id) {
         const index = this.state.paymentMethods.findIndex((pm) => pm.id === id);
+        await this.orm.call(
+            "payment.method",
+            "unlink",
+            [[id]]
+        );
         if (index > -1) {
             this.state.paymentMethods.splice(index, 1);
         }
     }
 
-    addBankAccount() {
-        if (this.state.newBankAccount.name && this.state.newBankAccount.account_number) {
-            this.state.bankAccounts.push({
-                id: Date.now(),
-                ...this.state.newBankAccount,
-            });
-            this.state.newBankAccount = { name: "", account_number: "", bank_name: "", currency_id: "" };
-        }
+    addPaymentMethodInAction() {
+        this.action.doAction({
+            type: "ir.actions.act_window",
+            res_model: "payment.method",
+            views: [[false, "form"]],
+            context: {
+                default_payment_type: "inbound",
+            },
+            target: "new",
+        },
+            {
+                onClose: async () => {
+                    console.log("Payment method form closed");
+
+                    const paymentMethods = await this.orm.searchRead(
+                        "payment.method",
+                        [],
+                        ["name", "code"]
+                    );
+
+                    this.state.paymentMethods = paymentMethods;
+
+                    console.log("Payment methods reloaded:", this.state.paymentMethods);
+                }
+            }
+        );
     }
 
-    removeBankAccount(id) {
+    addBankAccountinAction() {
+        this.action.doAction({
+            type: "ir.actions.act_window",
+            res_model: "account.account",
+            views: [[false, "form"]],
+            context: {
+                default_account_type: "asset_cash",
+            },
+            target: "new",
+        },
+            {
+                onClose: async () => {
+                    console.log("Bank account form closed");
+
+                    const bankAccounts = await this.orm.searchRead(
+                        "account.account",
+                        [["account_type", "=", "asset_cash"]],
+                        []
+                    );
+
+                    this.state.bankAccounts = bankAccounts;
+
+                    console.log("Bank accounts reloaded:", "bankAccounts");
+                }
+            }
+
+        );
+    }
+    addBankAccount() {
+
+        // if (this.state.newBankAccount.name && this.state.newBankAccount.account_number) {
+        //     this.state.bankAccounts.push({
+        //         id: Date.now(),
+        //         ...this.state.newBankAccount,
+        //     });
+        //     this.state.newBankAccount = { name: "", account_number: "", bank_name: "", currency_id: "" };
+        // }
+    }
+
+    async removeBankAccount(id) {
         const index = this.state.bankAccounts.findIndex((ba) => ba.id === id);
+        await this.orm.call(
+            "account.account",
+            "unlink",
+            [[id]]
+        );
         if (index > -1) {
             this.state.bankAccounts.splice(index, 1);
         }
     }
 
-    async saveAccountingConfig() {
-        try {
-            // Validate required fields
-            if (!this.state.fiscalLocalization || !this.state.chartOfAccounts) {
-                console.error("Fiscal localization and chart of accounts are required");
-                return false;
-            }
 
-            // If ZATCA is enabled, validate ZATCA configuration
-            if (this.state.zatcaEnabled) {
-                if (!this.state.zatcaApiUrl || !this.state.zatcaApiKey) {
-                    console.error("ZATCA API URL and API Key are required when ZATCA is enabled");
-                    return false;
-                }
-            }
-
-            const accountingData = {
-                fiscal_localization: this.state.fiscalLocalization,
-                chart_of_accounts: this.state.chartOfAccounts,
-                zatca_enabled: this.state.zatcaEnabled,
-                zatca_api_url: this.state.zatcaApiUrl,
-                zatca_api_key: this.state.zatcaApiKey,
-                payment_methods: this.state.paymentMethods,
-                bank_accounts: this.state.bankAccounts,
-            };
-
-            // Save to account.config (or similar model)
-            const result = await this.orm.call("res.company", "write", [
-                [1],
-                { accounting_config: JSON.stringify(accountingData) },
-            ]);
-
-            console.log("Accounting configuration saved:", accountingData);
-            return true;
-        } catch (error) {
-            console.error("Error saving accounting config:", error);
-            return false;
-        }
-    }
 }

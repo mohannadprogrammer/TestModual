@@ -19,7 +19,7 @@
                                 <p class="wizard_subtitle">Let's get your business ready</p>
                             </div>
                             <div class="wizard_progress_badge">
-                                <span t-esc="state.current_step + 1" /> / <span t-esc="6" />
+                                <span t-esc="state.current_step + 1" /> / <span t-esc="7" />
                             </div>
                             <!-- Close Button -->
                             <button class="wizard_close_btn" t-on-click="closeWizard" title="Close wizard">
@@ -51,6 +51,10 @@
                             </div>
                             <div t-attf-class="step_nav_item {{ state.current_step >= 5 ? 'completed' : '' }} {{ state.current_step === 5 ? 'active' : '' }}" t-on-click="() => this.goToStep(5)">
                                 <div class="step_nav_circle">6</div>
+                                <p class="step_nav_name">Document Layout</p>
+                            </div>
+                            <div t-attf-class="step_nav_item {{ state.current_step >= 6 ? 'completed' : '' }} {{ state.current_step === 6 ? 'active' : '' }}" t-on-click="() => this.goToStep(6)">
+                                <div class="step_nav_circle">7</div>
                                 <p class="step_nav_name">Finish</p>
                             </div>
                         </div>
@@ -60,7 +64,7 @@
                             <div class="wizard_progress_bar">
                                 <div
                                     class="wizard_progress_fill"
-                                    t-attf-style="width: {{ (state.current_step + 1) * 16.66 }}%"
+                                    t-attf-style="width: {{ (state.current_step + 1) * 14.29 }}%"
                                 />
                             </div>
                         </div>
@@ -91,6 +95,11 @@
                             updateFormData="()=>console.log('Data updated')" />
                         </t>
                         <t t-elif="state.current_step === 5">
+                            <DocumentLayoutStep onNext.bind="nextStep" onPrevious.bind="previousStep" 
+                            documentLayout="state.documentLayout" 
+                            updateFormData="()=>console.log('Data updated')" />
+                        </t>
+                        <t t-elif="state.current_step === 6">
                             <FinalStep onComplete.bind="completeWizard" onPrevious.bind="previousStep" />
                         </t>
                     </div>

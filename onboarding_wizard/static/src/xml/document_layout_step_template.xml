@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <!-- Step 6: Document Layout Configuration -->
+    <t t-name="onboarding_wizard.DocumentLayoutStep">
+        <div class="wizard_step document_layout_step">
+            <h2>Document Layout Configuration</h2>
+
+            <div class="layout_intro">
+                <p class="text-muted">
+                    Configure the layout and formatting for your business documents such as invoices, 
+                    quotes, purchase orders, and other reports.
+                </p>
+            </div>
+
+            <!-- Layout Selection -->
+            <div class="layout_selection_section">
+                <h3>Select Layout Template</h3>
+                <!-- link to open layout designer -->
+                <button class="btn btn-secondary" t-on-click="openLayoutDesigner">
+                    Open Layout Designer
+                </button>
+            </div>
+
+           
+
+           
+
+            <!-- Navigation Buttons -->
+            <div class="form_actions">
+                <button class="btn btn-outline-secondary" t-on-click="props.onPrevious">
+                    ← Previous
+                </button>
+                <button
+                    class="btn btn-primary"
+                    t-on-click=" () => {
+                        this.props.onNext();
+                    }">
+                    Apply &amp; Next →
+                </button>
+            </div>
+        </div>
+    </t>
+
+</templates>

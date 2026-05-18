@@ -8,4 +8,5 @@ export { CompanyInfoStep } from "./company_info_step";
 export { BusinessActivityStep } from "./business_activity_step";
 export { TeamUsersStep } from "./team_users_step";
 export { AccountingConfigStep } from "./accounting_config_step";
+export { DocumentLayoutStep } from "./document_layout_step";
 export { FinalStep } from "./final_step";

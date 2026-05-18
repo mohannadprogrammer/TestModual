@@ -11,10 +11,13 @@ class ResConfigSettings(models.TransientModel):
     @api.model
     def get_values(self):
         res = super(ResConfigSettings, self).get_values()
+        company = self.env.company
+        # // account_fiscal_country_id as code example for fetching existing config values to pre-populate the wizard
         res.update(
             onboarding_wizard_completed=self.env['ir.config_parameter'].sudo().get_param('onboarding_wizard_completed', default='False') == 'True',
             onboarding_wizard_skipped=self.env['ir.config_parameter'].sudo().get_param('onboarding_wizard_skipped', default='False') == 'True',
-            onboarding_wizard_current_step=int(self.env['ir.config_parameter'].sudo().get_param('onboarding_wizard_current_step', default='0'))
+            onboarding_wizard_current_step=int(self.env['ir.config_parameter'].sudo().get_param('onboarding_wizard_current_step', default='0')),
+            account_fiscal_country_id= company.account_fiscal_country_id.id,
         )
         return res
 
@@ -23,3 +26,6 @@ class ResConfigSettings(models.TransientModel):
         self.env['ir.config_parameter'].sudo().set_param('onboarding_wizard_completed', str(self.onboarding_wizard_completed))
         self.env['ir.config_parameter'].sudo().set_param('onboarding_wizard_skipped', str(self.onboarding_wizard_skipped))
         self.env['ir.config_parameter'].sudo().set_param('onboarding_wizard_current_step', str(self.onboarding_wizard_current_step))
+        self.env['ir.config_parameter'].sudo().set_param('account_fiscal_country_id', str(self.account_fiscal_country_id.id))
+
+        

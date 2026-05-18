@@ -7,6 +7,7 @@ import {
     BusinessActivityStep,
     TeamUsersStep,
     AccountingConfigStep,
+    DocumentLayoutStep,
     FinalStep
 } from "./wizard_steps/index";
 
@@ -22,6 +23,7 @@ export class OnboardingWizard extends Component {
         BusinessActivityStep,
         TeamUsersStep,
         AccountingConfigStep,
+        DocumentLayoutStep,
         FinalStep
     };
 
@@ -52,7 +54,7 @@ export class OnboardingWizard extends Component {
      * Move to the next step
      */
     async nextStep() {
-        if (this.state.current_step < 5) {
+        if (this.state.current_step < 6) {
             this.state.current_step++;
             const settingsId = await this.orm.create(
                 "res.config.settings",
@@ -86,7 +88,7 @@ export class OnboardingWizard extends Component {
      */
     goToStep(stepNumber) {
         console.log(this.state)
-        if (stepNumber >= 0 && stepNumber <= 5) {
+        if (stepNumber >= 0 && stepNumber <= 6) {
             this.state.current_step = stepNumber;
         }
     }

@@ -17,6 +17,7 @@
         'web',
         'base',
         'hr',
+        'account',
         'accountant',
         'l10n_sa_edi'
     ],
@@ -41,6 +42,7 @@
            'onboarding_wizard/static/src/xml/business_activity_step_template.xml',
            'onboarding_wizard/static/src/xml/team_users_step_template.xml',
            'onboarding_wizard/static/src/xml/accounting_config_step_template.xml',
+           'onboarding_wizard/static/src/xml/document_layout_step_template.xml',
            'onboarding_wizard/static/src/xml/final_step_template.xml',
            'onboarding_wizard/static/src/xml/webclient.xml',
        ],

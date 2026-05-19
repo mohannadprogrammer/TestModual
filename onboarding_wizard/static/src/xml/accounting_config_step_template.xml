@@ -54,11 +54,10 @@
                         <select 
                             class="form_control"
                             t-model="state.zatcaApi"
-                            t-on-change="(e) => this.handleInputChange('zatcaApi', e.target.value === 'true')"
                             >
                             
                             <option value="sandbox">Sandbox</option>
-                            <option value="preprod">	Simulation (Pre-Production)	</option>
+                            <option value="preprod">Simulation (Pre-Production)	</option>
                             <option value="true">Production</option>
                         </select>
                     </div>
@@ -169,6 +168,7 @@
                 <button
                     class="btn btn-primary"
                     t-on-click="() => {
+                    this.saveSettings();
                     props.onNext();
                     }"
                 >

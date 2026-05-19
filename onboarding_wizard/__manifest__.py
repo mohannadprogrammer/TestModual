@@ -19,7 +19,9 @@
         'hr',
         'account',
         'accountant',
+        'l10n_sa_edi',
         'l10n_sa_edi'
+    
     ],
     'data': [
         'security/ir.model.access.csv',

@@ -100,7 +100,7 @@
                             updateFormData="()=>console.log('Data updated')" />
                         </t>
                         <t t-elif="state.current_step === 6">
-                            <FinalStep onComplete.bind="completeWizard" onPrevious.bind="previousStep" />
+                            <FinalStep onComplete.bind="completeWizard" onPrevious.bind="previousStep" closeWizard.bind="closeWizard"/>
                         </t>
                     </div>
                 </div>

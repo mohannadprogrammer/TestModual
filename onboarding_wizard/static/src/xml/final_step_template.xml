@@ -11,7 +11,7 @@
             <div class="dashboard_stats_grid">
                 <div class="stat_card">
                     <div class="stat_value">
-                        <t t-esc="state.completionScore" />%
+                        <t t-out="state.completionScore" />%
                     </div>
                     <p class="stat_label">Setup Completion</p>
                     <div class="stat_progress">
@@ -56,7 +56,7 @@
             </div>
 
             <div class="final_actions">
-                <button class="btn btn-success btn-lg" t-on-click="props.onComplete">
+                <button class="btn btn-success btn-lg" t-on-click="completeWizard">
                     🎉 Complete Setup &amp; Go to Dashboard
                 </button>
             </div>

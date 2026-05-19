@@ -17,10 +17,9 @@ export class AccountingConfigStep extends Component {
         this.orm = useService("orm");
         this.action = useService("action");
         this.state = useState({
-            fiscalLocalization: this.props.accountingConfig?.fiscal_localization || "",
             chartOfAccounts: false,
-            zatcaApi: "",
-            paymentMethods: this.props.accountingConfig?.payment_methods || [],
+            zatcaApi: "sandbox",
+            paymentMethods: [],
             bankAccounts: this.props.accountingConfig?.bank_accounts || [],
             newPaymentMethod: { name: "", code: "" },
             newBankAccount: { name: "", account_number: "", bank_name: "", currency_id: "" },
@@ -51,6 +50,7 @@ export class AccountingConfigStep extends Component {
             this.state.currencies = currencies;
             this.state.countries = countries;
             this.state.currentlocalization = fiscal.account_fiscal_country_id || "";
+            this.state.zatcaApi = fiscal.l10n_sa_api_model || "sandbox";
             console.log(fiscal, "fiscal");
 
             const bankAccounts = await this.orm.searchRead(
@@ -180,6 +180,20 @@ export class AccountingConfigStep extends Component {
         if (index > -1) {
             this.state.bankAccounts.splice(index, 1);
         }
+    }
+    async saveSettings() {
+        console.log("Saving settings with fiscal localization:", this.state.zatcaApi);
+        await this.orm.call(
+            "res.config.settings",
+            "save_onboarding_settings",
+            [{
+
+                account_fiscal_country_id: parseInt(this.state.currentlocalization),
+                l10n_sa_api_model: this.state.zatcaApi,
+            }]
+        );
+
+
     }
 
 

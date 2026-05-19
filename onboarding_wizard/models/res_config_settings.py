@@ -18,6 +18,7 @@ class ResConfigSettings(models.TransientModel):
             onboarding_wizard_skipped=self.env['ir.config_parameter'].sudo().get_param('onboarding_wizard_skipped', default='False') == 'True',
             onboarding_wizard_current_step=int(self.env['ir.config_parameter'].sudo().get_param('onboarding_wizard_current_step', default='0')),
             account_fiscal_country_id= company.account_fiscal_country_id.id,
+            l10n_sa_api_mode=company.l10n_sa_api_mode,
         )
         return res
 
@@ -28,4 +29,19 @@ class ResConfigSettings(models.TransientModel):
         self.env['ir.config_parameter'].sudo().set_param('onboarding_wizard_current_step', str(self.onboarding_wizard_current_step))
         self.env['ir.config_parameter'].sudo().set_param('account_fiscal_country_id', str(self.account_fiscal_country_id.id))
 
-        
+    @api.model
+    def save_onboarding_settings(self, vals):
+
+        print("Saving onboarding settings with values:", vals)
+        company_vals = {}
+
+        if vals.get('account_fiscal_country_id'):
+            company_vals['account_fiscal_country_id'] = vals.get('account_fiscal_country_id')
+
+        if vals.get('l10n_sa_api_mode'):
+            company_vals['l10n_sa_api_mode'] = vals.get('l10n_sa_api_mode')
+
+        if company_vals:
+            self.env.company.sudo().write(company_vals)
+
+        return True
